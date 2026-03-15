@@ -1,0 +1,26 @@
+{
+  "name": "感謝ジャーナル",
+  "short_name": "感謝クエスト",
+  "description": "感謝を記録してレベルアップ！感謝クエストRPGジャーナル",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#fff9f5",
+  "theme_color": "#ff8fab",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [],
+  "categories": ["lifestyle", "productivity"]
+}

@@ -1,0 +1,133 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ff6b9d"/>
+      <stop offset="60%" stop-color="#ff8fab"/>
+      <stop offset="100%" stop-color="#ffb347"/>
+    </linearGradient>
+    <linearGradient id="blade" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"   stop-color="#c8d8e8"/>
+      <stop offset="45%"  stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#a8b8c8"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- ── 背景 ── -->
+  <rect width="512" height="512" rx="100" fill="url(#bg)"/>
+  <rect width="512" height="512" rx="100" fill="rgba(255,255,255,0.06)"/>
+
+  <!-- ── 桜の花びら（散りばめ） ── -->
+  <!-- 左上 大きな桜 -->
+  <g transform="translate(118,148)">
+    <ellipse cx="0" cy="-30" rx="15" ry="26" fill="#ffe0ec" opacity=".92"/>
+    <ellipse cx="0" cy="-30" rx="15" ry="26" fill="#ffccd9" opacity=".92" transform="rotate(72)"/>
+    <ellipse cx="0" cy="-30" rx="15" ry="26" fill="#ffe0ec" opacity=".92" transform="rotate(144)"/>
+    <ellipse cx="0" cy="-30" rx="15" ry="26" fill="#ffccd9" opacity=".92" transform="rotate(216)"/>
+    <ellipse cx="0" cy="-30" rx="15" ry="26" fill="#ffe0ec" opacity=".92" transform="rotate(288)"/>
+    <circle r="9" fill="#ffe082"/>
+    <circle r="4" fill="#ff8c00"/>
+  </g>
+
+  <!-- 右上 大きな桜 -->
+  <g transform="translate(394,132)">
+    <ellipse cx="0" cy="-32" rx="16" ry="28" fill="#ffd6e4" opacity=".92"/>
+    <ellipse cx="0" cy="-32" rx="16" ry="28" fill="#ffb3c6" opacity=".92" transform="rotate(72)"/>
+    <ellipse cx="0" cy="-32" rx="16" ry="28" fill="#ffd6e4" opacity=".92" transform="rotate(144)"/>
+    <ellipse cx="0" cy="-32" rx="16" ry="28" fill="#ffb3c6" opacity=".92" transform="rotate(216)"/>
+    <ellipse cx="0" cy="-32" rx="16" ry="28" fill="#ffd6e4" opacity=".92" transform="rotate(288)"/>
+    <circle r="10" fill="#ffe082"/>
+    <circle r="4" fill="#ff8c00"/>
+  </g>
+
+  <!-- 左下 小さな桜 -->
+  <g transform="translate(100,390)">
+    <ellipse cx="0" cy="-22" rx="11" ry="19" fill="#ffd6e4" opacity=".80"/>
+    <ellipse cx="0" cy="-22" rx="11" ry="19" fill="#ffb3c6" opacity=".80" transform="rotate(72)"/>
+    <ellipse cx="0" cy="-22" rx="11" ry="19" fill="#ffd6e4" opacity=".80" transform="rotate(144)"/>
+    <ellipse cx="0" cy="-22" rx="11" ry="19" fill="#ffb3c6" opacity=".80" transform="rotate(216)"/>
+    <ellipse cx="0" cy="-22" rx="11" ry="19" fill="#ffd6e4" opacity=".80" transform="rotate(288)"/>
+    <circle r="7" fill="#ffe082"/>
+    <circle r="3" fill="#ff8c00"/>
+  </g>
+
+  <!-- 右下 小さな桜 -->
+  <g transform="translate(412,400)">
+    <ellipse cx="0" cy="-20" rx="10" ry="17" fill="#ffe0ec" opacity=".75"/>
+    <ellipse cx="0" cy="-20" rx="10" ry="17" fill="#ffb3c6" opacity=".75" transform="rotate(72)"/>
+    <ellipse cx="0" cy="-20" rx="10" ry="17" fill="#ffe0ec" opacity=".75" transform="rotate(144)"/>
+    <ellipse cx="0" cy="-20" rx="10" ry="17" fill="#ffb3c6" opacity=".75" transform="rotate(216)"/>
+    <ellipse cx="0" cy="-20" rx="10" ry="17" fill="#ffe0ec" opacity=".75" transform="rotate(288)"/>
+    <circle r="6" fill="#ffe082"/>
+    <circle r="3" fill="#ff8c00"/>
+  </g>
+
+  <!-- 散った花びら -->
+  <ellipse cx="172" cy="86"  rx="9"  ry="15" fill="#ffccd9" opacity=".65" transform="rotate(-25,172,86)"/>
+  <ellipse cx="348" cy="74"  rx="8"  ry="13" fill="#ffd6e4" opacity=".60" transform="rotate(30,348,74)"/>
+  <ellipse cx="76"  cy="275" rx="8"  ry="13" fill="#ffb3c6" opacity=".55" transform="rotate(50,76,275)"/>
+  <ellipse cx="440" cy="300" rx="9"  ry="14" fill="#ffd6e4" opacity=".60" transform="rotate(-20,440,300)"/>
+  <ellipse cx="432" cy="186" rx="7"  ry="11" fill="#ffccd9" opacity=".55" transform="rotate(40,432,186)"/>
+  <ellipse cx="82"  cy="192" rx="7"  ry="11" fill="#ffd6e4" opacity=".50" transform="rotate(-35,82,192)"/>
+
+  <!-- ── 剣（ピクセルアート風） ── -->
+
+  <!-- 剣先（三角） -->
+  <polygon points="256,54  240,100 272,100" fill="url(#blade)"/>
+  <!-- 刃ハイライト（先端） -->
+  <polygon points="256,60  252,92  260,92"  fill="rgba(255,255,255,0.55)"/>
+
+  <!-- 刃身 -->
+  <rect x="240" y="96"  width="32" height="180" fill="url(#blade)"/>
+  <!-- 刃ハイライト（縦） -->
+  <rect x="251" y="96"  width="12" height="180" fill="rgba(255,255,255,0.45)"/>
+  <!-- 刃エッジシャドウ -->
+  <rect x="240" y="96"  width="4"  height="180" fill="rgba(0,0,0,0.08)"/>
+  <rect x="268" y="96"  width="4"  height="180" fill="rgba(0,0,0,0.08)"/>
+
+  <!-- 鍔（クロスガード）横バー -->
+  <rect x="158" y="264" width="196" height="22" rx="5" fill="#FFD700"/>
+  <!-- 鍔上面ハイライト -->
+  <rect x="162" y="255" width="188" height="13" rx="4" fill="#FFC107"/>
+  <!-- 鍔両端の丸 -->
+  <circle cx="162" cy="275" r="13" fill="#FFB300"/>
+  <circle cx="350" cy="275" r="13" fill="#FFB300"/>
+  <circle cx="162" cy="275" r="7"  fill="#FF8C00"/>
+  <circle cx="350" cy="275" r="7"  fill="#FF8C00"/>
+
+  <!-- グリップ（柄） -->
+  <rect x="244" y="286" width="24" height="114" rx="3" fill="#6D3A1A"/>
+  <!-- グリップ表面 -->
+  <rect x="248" y="286" width="10" height="114" rx="2" fill="#8B4A20"/>
+  <!-- 柄巻き（金帯） -->
+  <rect x="242" y="300" width="28" height="7" rx="2" fill="#FFD700"/>
+  <rect x="242" y="320" width="28" height="7" rx="2" fill="#FFD700"/>
+  <rect x="242" y="340" width="28" height="7" rx="2" fill="#FFD700"/>
+  <rect x="242" y="360" width="28" height="7" rx="2" fill="#FFD700"/>
+  <rect x="242" y="380" width="28" height="7" rx="2" fill="#FFD700"/>
+
+  <!-- 柄頭（ポンメル） -->
+  <rect x="224" y="400" width="64" height="20" rx="6" fill="#FFD700"/>
+  <rect x="230" y="418" width="52" height="16" rx="6" fill="#FFC107"/>
+  <rect x="236" y="432" width="40" height="14" rx="5" fill="#FFD700"/>
+  <ellipse cx="256" cy="446" rx="18" ry="10" fill="#FFC107"/>
+
+  <!-- ── キラキラ ── -->
+  <!-- 右上スパークル -->
+  <g transform="translate(444,74)" opacity=".85">
+    <rect x="-2" y="-12" width="4" height="24" fill="white" rx="2"/>
+    <rect x="-12" y="-2" width="24" height="4" fill="white" rx="2"/>
+    <rect x="-7" y="-7" width="3" height="14" fill="white" rx="1" transform="rotate(45)"/>
+    <rect x="-7" y="-7" width="3" height="14" fill="white" rx="1" transform="rotate(-45)"/>
+  </g>
+  <!-- 左下スパークル（小） -->
+  <g transform="translate(68,438)" opacity=".70">
+    <rect x="-1.5" y="-9" width="3" height="18" fill="white" rx="2"/>
+    <rect x="-9" y="-1.5" width="18" height="3" fill="white" rx="2"/>
+  </g>
+  <!-- 剣先グロー -->
+  <circle cx="256" cy="64" r="18" fill="rgba(255,255,255,0.15)" filter="url(#glow)"/>
+</svg>
