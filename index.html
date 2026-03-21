@@ -7,200 +7,256 @@
   <link rel="icon" href="icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icon.svg">
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#ff8fab">
+  <meta name="theme-color" content="#1a1a2e">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="感謝クエスト">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    :root {
-      --pink: #ff8fab; --pink-light: #ffb3c6; --pink-bg: #fff0f4;
-      --green: #52b788; --green-light: #b7e4c7; --green-bg: #f0faf4;
-      --amber: #ffb347; --amber-light: #ffe0b2;
-      --bg: #fff9f5; --card: #ffffff; --text: #5c3d2e;
-      --text-sub: #9e7e70; --border: #f0e4dc;
-    }
-    body { font-family: 'Hiragino Kaku Gothic ProN','Yu Gothic','Noto Sans JP',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; padding-bottom:76px; }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    :root{--bg:#0f0e17;--card:#1a1a2e;--card2:#16213e;--text:#e0e0e0;--text-sub:#8a8a9a;--border:#2a2a4a;--gold:#ffd700;--pink:#ff6b9d;--green:#52b788;--blue:#4fc3f7;--purple:#a29bfe;}
+    body{font-family:'Hiragino Kaku Gothic ProN','Yu Gothic','Noto Sans JP',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:68px;}
 
     /* Header */
-    .header { background:linear-gradient(135deg,#ff8fab 0%,#ffb347 100%); padding:14px 16px 12px; color:white; text-align:center; box-shadow:0 3px 12px rgba(255,143,171,.3); position:sticky; top:0; z-index:50; }
-    .header h1 { font-size:20px; font-weight:bold; letter-spacing:1px; }
-    .header-badges { display:flex; justify-content:center; gap:10px; margin-top:8px; flex-wrap:wrap; }
-    .badge { background:rgba(255,255,255,.28); padding:3px 10px; border-radius:20px; font-size:11px; font-weight:600; }
+    .header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);padding:12px 16px 10px;text-align:center;border-bottom:2px solid var(--gold);position:sticky;top:0;z-index:50;}
+    .header h1{font-size:18px;color:var(--gold);letter-spacing:2px;text-shadow:0 0 10px rgba(255,215,0,.3);}
+    .header-badges{display:flex;justify-content:center;gap:8px;margin-top:6px;flex-wrap:wrap;}
+    .badge{background:rgba(255,215,0,.12);border:1px solid rgba(255,215,0,.25);padding:2px 10px;border-radius:4px;font-size:11px;color:var(--gold);}
 
     /* Nav */
-    .nav { position:fixed; bottom:0; left:0; right:0; background:white; display:flex; box-shadow:0 -2px 16px rgba(0,0,0,.08); z-index:100; }
-    .nav-btn { flex:1; display:flex; flex-direction:column; align-items:center; padding:9px 2px 7px; cursor:pointer; color:#c9b8b0; font-size:10px; gap:3px; border:none; background:none; transition:color .2s; }
-    .nav-btn .icon { font-size:20px; }
-    .nav-btn.active { color:var(--pink); }
+    .nav{position:fixed;bottom:0;left:0;right:0;background:#0a0a18;display:flex;border-top:2px solid var(--gold);z-index:100;}
+    .nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;padding:7px 2px 5px;cursor:pointer;color:#555;font-size:9px;gap:2px;border:none;background:none;transition:color .2s;}
+    .nav-btn .icon{font-size:18px;}
+    .nav-btn.active{color:var(--gold);}
 
     /* Content */
-    .content { max-width:620px; margin:0 auto; padding:14px 14px 0; }
-    .tab { display:none; } .tab.active { display:block; }
+    .content{max-width:620px;margin:0 auto;padding:12px 12px 0;}
+    .tab{display:none;}.tab.active{display:block;}
+
+    /* DQ Window */
+    .dq-window{border:3px solid #fff;border-radius:8px;background:#000;color:#fff;padding:12px 14px;position:relative;margin-bottom:10px;font-size:14px;line-height:1.7;}
+    .dq-window::after{content:'';position:absolute;inset:3px;border:1px solid rgba(255,255,255,.2);border-radius:4px;pointer-events:none;}
+    .dq-title{color:var(--gold);font-weight:bold;font-size:13px;margin-bottom:8px;letter-spacing:1px;}
 
     /* Card */
-    .card { background:var(--card); border-radius:18px; padding:16px 16px 18px; margin-bottom:12px; box-shadow:0 2px 12px rgba(0,0,0,.05); border:1px solid var(--border); }
-    .card-title { font-size:13px; color:var(--text-sub); margin-bottom:12px; font-weight:700; display:flex; align-items:center; gap:5px; }
-
-    /* Prompt */
-    .prompt-box { background:linear-gradient(135deg,#fff0f4,#fff8f0); border:1.5px dashed var(--pink-light); border-radius:14px; padding:14px 16px; margin-bottom:12px; text-align:center; }
-    .prompt-emoji { font-size:26px; margin-bottom:4px; }
-    .prompt-text { font-size:14px; line-height:1.6; color:var(--text); }
-
-    /* Counter */
-    .counter-wrap { display:flex; flex-direction:column; align-items:center; gap:12px; }
-    .counter-btn { width:116px; height:116px; background:linear-gradient(145deg,#ff8fab,#ff5c84); color:white; border:none; border-radius:50%; cursor:pointer; font-size:14px; font-weight:bold; box-shadow:0 6px 22px rgba(255,92,132,.4); transition:transform .15s,box-shadow .15s; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; }
-    .counter-btn .cicon { font-size:30px; }
-    .counter-btn:active { transform:scale(.9); box-shadow:0 3px 10px rgba(255,92,132,.35); }
-    .counter-nums { display:flex; gap:28px; }
-    .c-num { text-align:center; }
-    .c-num .val { font-size:32px; font-weight:bold; color:var(--pink); line-height:1; }
-    .c-num .lbl { font-size:11px; color:var(--text-sub); margin-top:2px; }
+    .card{background:var(--card);border-radius:12px;padding:14px;margin-bottom:10px;border:1px solid var(--border);}
+    .card-title{font-size:12px;color:var(--gold);margin-bottom:10px;font-weight:700;display:flex;align-items:center;gap:5px;}
 
     /* Form */
-    .form-group { margin-bottom:12px; }
-    .form-label { font-size:12px; font-weight:700; color:var(--text-sub); margin-bottom:5px; display:block; }
-    textarea { width:100%; border:1.5px solid var(--border); border-radius:10px; padding:11px 12px; font-size:15px; font-family:inherit; resize:none; color:var(--text); background:#fffaf7; transition:border-color .2s; }
-    textarea:focus { outline:none; border-color:var(--pink-light); }
-    .cat-list { display:flex; flex-wrap:wrap; gap:7px; }
-    .cat-btn { padding:5px 13px; border-radius:20px; border:1.5px solid var(--border); background:white; cursor:pointer; font-size:13px; color:var(--text); transition:all .2s; }
-    .cat-btn.sel { background:var(--green-light); border-color:var(--green); color:var(--green); font-weight:700; }
-    .mood-row { display:flex; justify-content:center; gap:8px; }
-    .mood-btn { font-size:28px; background:none; border:2px solid transparent; border-radius:50%; width:50px; height:50px; cursor:pointer; transition:all .2s; display:flex; align-items:center; justify-content:center; }
-    .mood-btn.sel { border-color:var(--pink); background:var(--pink-bg); transform:scale(1.2); }
-    .save-btn { width:100%; background:linear-gradient(135deg,var(--green),#40916c); color:white; border:none; border-radius:12px; padding:14px; font-size:15px; font-weight:bold; cursor:pointer; box-shadow:0 4px 14px rgba(82,183,136,.35); transition:all .2s; }
-    .save-btn:active { transform:scale(.98); }
+    .form-group{margin-bottom:10px;}
+    .form-label{font-size:11px;font-weight:700;color:var(--text-sub);margin-bottom:4px;display:block;}
+    textarea{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px;font-size:14px;font-family:inherit;resize:none;color:var(--text);background:#0d0d1a;transition:border-color .2s;}
+    textarea:focus{outline:none;border-color:var(--gold);}
+    .cat-list{display:flex;flex-wrap:wrap;gap:6px;}
+    .cat-btn{padding:4px 11px;border-radius:14px;border:1px solid var(--border);background:var(--card2);cursor:pointer;font-size:12px;color:var(--text-sub);transition:all .2s;}
+    .cat-btn.sel{background:rgba(82,183,136,.2);border-color:var(--green);color:var(--green);font-weight:700;}
+    .mood-row{display:flex;justify-content:center;gap:6px;}
+    .mood-btn{font-size:26px;background:none;border:2px solid transparent;border-radius:50%;width:44px;height:44px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;}
+    .mood-btn.sel{border-color:var(--gold);background:rgba(255,215,0,.1);transform:scale(1.15);}
+    .save-btn{width:100%;background:linear-gradient(135deg,#ffd700,#ffaa00);color:#1a1a2e;border:none;border-radius:8px;padding:13px;font-size:14px;font-weight:bold;cursor:pointer;letter-spacing:1px;transition:all .2s;}
+    .save-btn:active{transform:scale(.97);}
 
     /* Entry */
-    .entry-item { border-left:3px solid var(--pink-light); padding:10px 32px 10px 12px; margin-bottom:8px; background:#fff8f9; border-radius:0 10px 10px 0; position:relative; }
-    .entry-text { font-size:14px; line-height:1.6; margin-bottom:5px; }
-    .entry-meta { display:flex; gap:7px; align-items:center; flex-wrap:wrap; }
-    .entry-cat { font-size:11px; background:var(--green-light); color:var(--green); padding:2px 8px; border-radius:10px; }
-    .entry-time { font-size:11px; color:var(--text-sub); }
-    .entry-del { position:absolute; top:8px; right:8px; background:none; border:none; color:#ddd; cursor:pointer; font-size:15px; transition:color .2s; }
-    .entry-del:hover { color:var(--pink); }
-    .sec-title { font-size:15px; font-weight:bold; margin-bottom:10px; display:flex; align-items:center; gap:5px; }
-    .empty-state { text-align:center; padding:28px 20px; color:var(--text-sub); }
-    .empty-icon { font-size:38px; margin-bottom:8px; }
-    .empty-state p { font-size:13px; line-height:1.7; }
+    .entry-item{border-left:3px solid var(--gold);padding:8px 28px 8px 10px;margin-bottom:6px;background:var(--card2);border-radius:0 8px 8px 0;position:relative;}
+    .entry-text{font-size:13px;line-height:1.6;margin-bottom:4px;}
+    .entry-meta{display:flex;gap:6px;align-items:center;flex-wrap:wrap;}
+    .entry-cat{font-size:10px;background:rgba(82,183,136,.2);color:var(--green);padding:2px 7px;border-radius:8px;}
+    .entry-time{font-size:10px;color:var(--text-sub);}
+    .entry-del{position:absolute;top:6px;right:6px;background:none;border:none;color:#555;cursor:pointer;font-size:13px;transition:color .2s;}
+    .entry-del:hover{color:var(--pink);}
+    .sec-title{font-size:14px;font-weight:bold;margin-bottom:8px;color:var(--gold);display:flex;align-items:center;gap:5px;}
+    .empty-state{text-align:center;padding:24px 16px;color:var(--text-sub);}
+    .empty-icon{font-size:34px;margin-bottom:6px;}
+    .empty-state p{font-size:12px;line-height:1.7;}
 
-    /* ── Quest Tab ── */
-    .quest-scene {
-      border-radius:14px; overflow:hidden; margin-bottom:16px;
-      background:linear-gradient(180deg,#87CEEB 0%,#b0e2ff 52%,#6abf6a 52%,#4a9e4a 100%);
-      height:190px; display:flex; align-items:flex-end; justify-content:center;
-      padding-bottom:14px; position:relative;
-    }
-    .quest-scene-cloud { position:absolute; top:14px; left:16px; font-size:22px; opacity:.7; animation:cloudDrift 8s ease-in-out infinite; }
-    .quest-scene-cloud2 { position:absolute; top:8px; right:20px; font-size:15px; opacity:.5; animation:cloudDrift 12s ease-in-out infinite 3s; }
-    @keyframes cloudDrift { 0%,100%{transform:translateX(0)} 50%{transform:translateX(8px)} }
-    .quest-scene-star { position:absolute; font-size:12px; }
-    .hero-shadow { width:56px; height:7px; border-radius:50%; background:rgba(0,0,0,.22); position:absolute; bottom:8px; }
-    .hero-sprite { image-rendering:pixelated; image-rendering:crisp-edges; animation:heroIdle 1.8s ease-in-out infinite; position:relative; z-index:2; }
-    @keyframes heroIdle { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
-    .hero-lvup { animation:lvUpPop .55s cubic-bezier(.175,.885,.32,1.275) !important; }
-    @keyframes lvUpPop { 0%{transform:scale(1)} 50%{transform:scale(1.45) translateY(-12px)} 100%{transform:scale(1)} }
+    /* Prompt */
+    .prompt-box{background:linear-gradient(135deg,rgba(255,215,0,.08),rgba(255,107,157,.08));border:1px dashed rgba(255,215,0,.3);border-radius:10px;padding:12px 14px;margin-bottom:10px;text-align:center;}
+    .prompt-emoji{font-size:24px;margin-bottom:3px;}
+    .prompt-text{font-size:13px;line-height:1.6;color:var(--text);}
 
-    .quest-lv-wrap { text-align:center; margin-bottom:14px; }
-    .quest-lv-badge { display:inline-block; font-size:12px; font-weight:700; padding:3px 14px; border-radius:14px; margin-bottom:5px; background:linear-gradient(135deg,#a29bfe,#6c5ce7); color:white; letter-spacing:.5px; }
-    .quest-lv-name { font-size:22px; font-weight:bold; color:var(--text); }
-    .quest-lv-story { font-size:12px; color:var(--text-sub); margin-top:4px; line-height:1.5; }
+    /* Counter */
+    .counter-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;}
+    .counter-btn{width:100px;height:100px;background:linear-gradient(145deg,var(--gold),#ffaa00);color:#1a1a2e;border:none;border-radius:50%;cursor:pointer;font-size:13px;font-weight:bold;box-shadow:0 4px 18px rgba(255,215,0,.3);transition:transform .15s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;}
+    .counter-btn .cicon{font-size:28px;}
+    .counter-btn:active{transform:scale(.88);}
+    .counter-nums{display:flex;gap:24px;}
+    .c-num{text-align:center;}
+    .c-num .val{font-size:28px;font-weight:bold;color:var(--gold);line-height:1;}
+    .c-num .lbl{font-size:10px;color:var(--text-sub);margin-top:2px;}
 
-    .quest-stats { display:flex; flex-direction:column; gap:9px; }
-    .qstat-row { display:flex; align-items:center; gap:8px; }
-    .qstat-icon { font-size:14px; width:20px; text-align:center; flex-shrink:0; }
-    .qstat-lbl  { font-size:11px; font-weight:700; color:var(--text-sub); width:30px; flex-shrink:0; }
-    .qstat-track { flex:1; height:12px; background:#e8e8e8; border-radius:6px; overflow:hidden; box-shadow:inset 0 1px 3px rgba(0,0,0,.12); }
-    .qstat-fill  { height:100%; border-radius:6px; transition:width .9s cubic-bezier(.4,0,.2,1); }
-    .qstat-hp  { background:linear-gradient(90deg,#ff6b6b,#ff8fab); }
-    .qstat-atk { background:linear-gradient(90deg,#ffb347,#ff6b00); }
-    .qstat-def { background:linear-gradient(90deg,#74b9ff,#0984e3); }
-    .qstat-mag { background:linear-gradient(90deg,#a29bfe,#6c5ce7); }
-    .qstat-val { font-size:12px; font-weight:bold; width:36px; text-align:right; color:var(--text); font-family:monospace; }
+    /* ===== TOWER / ADVENTURE ===== */
+    .tower-header{text-align:center;padding:10px 0 14px;}
+    .tower-floor-big{font-size:42px;font-weight:bold;color:var(--gold);text-shadow:0 0 20px rgba(255,215,0,.4);line-height:1;}
+    .tower-area{font-size:14px;color:var(--text-sub);margin-top:4px;}
+    .tower-bar-wrap{display:flex;align-items:center;gap:8px;margin-top:10px;padding:0 20px;}
+    .tower-bar-label{font-size:10px;color:var(--text-sub);width:24px;text-align:center;}
+    .tower-bar-track{flex:1;height:8px;background:#222;border-radius:4px;overflow:hidden;}
+    .tower-bar-fill{height:100%;background:linear-gradient(90deg,var(--gold),#ffaa00);border-radius:4px;transition:width .8s;}
+    .tower-boss-next{text-align:center;font-size:12px;color:var(--pink);margin-top:8px;}
 
-    .quest-progress-wrap { margin-top:14px; }
-    .quest-prog-labels { display:flex; justify-content:space-between; font-size:12px; color:var(--text-sub); margin-bottom:5px; }
-    .quest-prog-track { height:10px; background:#e8e8e8; border-radius:5px; overflow:hidden; box-shadow:inset 0 1px 3px rgba(0,0,0,.1); }
-    .quest-prog-fill  { height:100%; background:linear-gradient(90deg,#a29bfe,#6c5ce7); border-radius:5px; transition:width .9s cubic-bezier(.4,0,.2,1); }
+    /* Hero in adventure */
+    .adv-hero-wrap{display:flex;align-items:center;gap:14px;padding:6px 0;}
+    .adv-hero-sprite{image-rendering:pixelated;image-rendering:crisp-edges;flex-shrink:0;}
+    .adv-hero-stats{flex:1;}
+    .adv-stat-row{display:flex;align-items:center;gap:6px;margin-bottom:4px;}
+    .adv-stat-icon{font-size:12px;width:18px;text-align:center;}
+    .adv-stat-lbl{font-size:10px;color:var(--text-sub);width:26px;}
+    .adv-stat-bar{flex:1;height:8px;background:#222;border-radius:4px;overflow:hidden;}
+    .adv-stat-fill{height:100%;border-radius:4px;transition:width .8s;}
+    .adv-stat-fill.hp{background:linear-gradient(90deg,#ff6b6b,#ff8fab);}
+    .adv-stat-fill.atk{background:linear-gradient(90deg,#ffb347,#ff6b00);}
+    .adv-stat-fill.def{background:linear-gradient(90deg,#74b9ff,#0984e3);}
+    .adv-stat-fill.mag{background:linear-gradient(90deg,#a29bfe,#6c5ce7);}
+    .adv-stat-val{font-size:11px;font-weight:bold;width:32px;text-align:right;font-family:monospace;}
 
     /* Equipment */
-    .equip-list { display:flex; flex-direction:column; gap:9px; }
-    .equip-row { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:12px; background:#fffaf7; border:1.5px solid var(--border); }
-    .equip-icon { font-size:22px; width:34px; text-align:center; flex-shrink:0; }
-    .equip-info { flex:1; min-width:0; }
-    .equip-info h4 { font-size:13px; font-weight:700; display:flex; align-items:center; gap:6px; }
-    .equip-stat { font-size:11px; font-weight:bold; color:#6c5ce7; background:#ede0ff; padding:1px 6px; border-radius:6px; }
-    .equip-info p  { font-size:11px; color:var(--text-sub); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .equip-rarity { font-size:10px; font-weight:700; padding:2px 7px; border-radius:10px; flex-shrink:0; white-space:nowrap; }
-    .rarity-common   { background:#eee; color:#888; }
-    .rarity-uncommon { background:#d4f1d4; color:#2e7d32; }
-    .rarity-rare     { background:#dce8ff; color:#1565c0; }
-    .rarity-epic     { background:#ede0ff; color:#6a1b9a; }
-    .rarity-legend   { background:linear-gradient(135deg,#fff3cd,#ffe082); color:#e65100; border:1px solid #ffca28; }
+    .equip-row{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;background:rgba(255,255,255,.03);border:1px solid var(--border);margin-bottom:6px;}
+    .equip-icon{font-size:20px;width:28px;text-align:center;flex-shrink:0;}
+    .equip-info{flex:1;min-width:0;}
+    .equip-info h4{font-size:12px;font-weight:700;display:flex;align-items:center;gap:4px;}
+    .equip-stat{font-size:10px;font-weight:bold;color:var(--purple);background:rgba(162,155,254,.15);padding:1px 5px;border-radius:4px;}
+    .equip-info p{font-size:10px;color:var(--text-sub);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .equip-rarity{font-size:9px;font-weight:700;padding:2px 6px;border-radius:6px;flex-shrink:0;}
+    .rarity-common{background:rgba(150,150,150,.2);color:#999;}
+    .rarity-uncommon{background:rgba(82,183,136,.15);color:var(--green);}
+    .rarity-rare{background:rgba(79,195,247,.15);color:var(--blue);}
+    .rarity-epic{background:rgba(162,155,254,.15);color:var(--purple);}
+    .rarity-legend{background:rgba(255,215,0,.15);color:var(--gold);border:1px solid rgba(255,215,0,.3);}
 
-    /* Achievements */
-    .ach-list { display:flex; flex-direction:column; gap:9px; }
-    .ach-item { display:flex; align-items:center; gap:12px; padding:10px 12px; border-radius:12px; background:#fffaf7; border:1.5px solid var(--border); }
-    .ach-item.on { background:linear-gradient(135deg,#fff9f0,#fff0f4); border-color:var(--pink-light); }
-    .ach-icon { font-size:26px; width:42px; text-align:center; flex-shrink:0; }
-    .ach-info h4 { font-size:13px; }
-    .ach-info p { font-size:11px; color:var(--text-sub); }
-    .ach-item.off .ach-icon { filter:grayscale(1); opacity:.35; }
-    .ach-item.off .ach-info { opacity:.45; }
+    /* Happy Equip */
+    .happy-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
+    .happy-slot{text-align:center;padding:8px 4px;border-radius:8px;background:rgba(255,255,255,.03);border:1px solid var(--border);}
+    .happy-slot.obtained{background:rgba(255,215,0,.08);border-color:rgba(255,215,0,.3);}
+    .happy-slot .h-icon{font-size:24px;filter:grayscale(1);opacity:.3;}
+    .happy-slot.obtained .h-icon{filter:none;opacity:1;}
+    .happy-slot .h-name{font-size:9px;color:var(--text-sub);margin-top:3px;}
+    .happy-slot.obtained .h-name{color:var(--gold);}
+
+    /* Boss checklist */
+    .boss-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:12px;}
+    .boss-row:last-child{border:none;}
+    .boss-status{width:20px;text-align:center;font-size:14px;}
+    .boss-name{flex:1;color:var(--text-sub);}
+    .boss-row.defeated .boss-name{color:var(--green);}
+    .boss-floor{color:var(--text-sub);font-size:11px;}
+
+    /* Master quotes collection */
+    .master-count{text-align:center;font-size:12px;color:var(--text-sub);margin-bottom:8px;}
+    .master-item{padding:8px 10px;border-radius:6px;background:rgba(255,255,255,.03);border:1px solid var(--border);margin-bottom:5px;font-size:12px;line-height:1.6;}
+    .master-item .m-quote{color:var(--gold);font-weight:bold;}
+    .master-item .m-detail{color:var(--text-sub);margin-top:2px;font-size:11px;}
+
+    /* ===== BATTLE OVERLAY ===== */
+    .battle-overlay{position:fixed;inset:0;background:#000;z-index:300;display:none;flex-direction:column;}
+    .battle-overlay.open{display:flex;}
+    .battle-skip{position:absolute;top:10px;right:12px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;padding:4px 12px;border-radius:4px;font-size:11px;cursor:pointer;z-index:10;}
+    .battle-monster-area{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;}
+    .battle-monster-name{color:#fff;font-size:14px;margin-bottom:8px;letter-spacing:1px;}
+    .battle-monster-sprite{image-rendering:pixelated;image-rendering:crisp-edges;margin-bottom:10px;}
+    .battle-hp-wrap{width:140px;}
+    .battle-hp-label{font-size:10px;color:#aaa;margin-bottom:3px;}
+    .battle-hp-track{height:6px;background:#333;border-radius:3px;overflow:hidden;}
+    .battle-hp-fill{height:100%;background:linear-gradient(90deg,#ff6b6b,#ff4444);border-radius:3px;transition:width .3s;}
+    @keyframes monsterHit{0%{opacity:1}25%{opacity:0}50%{opacity:1}75%{opacity:0}100%{opacity:1}}
+    .monster-flash{animation:monsterHit .4s;}
+    .battle-msg-window{border:3px solid #fff;border-radius:8px;background:#000;color:#fff;padding:12px 14px;margin:0 10px 10px;min-height:90px;font-size:14px;line-height:1.8;position:relative;}
+    .battle-msg-window::after{content:'';position:absolute;inset:3px;border:1px solid rgba(255,255,255,.2);border-radius:4px;pointer-events:none;}
+    .battle-msg-window p{margin-bottom:2px;}
+    .battle-result{text-align:center;padding:10px;margin:0 10px 10px;}
+    .battle-result-item{color:var(--gold);font-size:13px;margin-bottom:4px;opacity:0;transition:opacity .3s;}
+    .battle-result-item.show{opacity:1;}
+
+    /* ===== MASTER OVERLAY ===== */
+    .master-overlay{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:310;display:none;align-items:center;justify-content:center;padding:20px;}
+    .master-overlay.open{display:flex;}
+    .master-box{max-width:380px;width:100%;}
+    .master-portrait{text-align:center;font-size:48px;margin-bottom:12px;}
+    .master-window{border:3px solid var(--gold);border-radius:8px;background:#000;color:#fff;padding:16px 18px;position:relative;font-size:14px;line-height:1.9;}
+    .master-window::after{content:'';position:absolute;inset:3px;border:1px solid rgba(255,215,0,.2);border-radius:4px;pointer-events:none;}
+    .master-label{color:var(--gold);font-size:12px;margin-bottom:8px;letter-spacing:1px;}
+    .master-quote-text{font-weight:bold;margin-bottom:8px;font-size:15px;}
+    .master-detail{color:#ccc;font-size:13px;line-height:1.7;}
+    .master-exp{text-align:center;color:var(--green);font-size:13px;margin-top:10px;font-weight:bold;}
+    .master-close{display:block;width:100%;margin-top:14px;background:rgba(255,215,0,.15);border:2px solid var(--gold);color:var(--gold);padding:10px;border-radius:6px;font-size:14px;font-weight:bold;cursor:pointer;letter-spacing:1px;}
 
     /* Calendar */
-    .cal-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
-    .cal-nav { background:var(--border); border:none; border-radius:8px; padding:6px 13px; cursor:pointer; font-size:15px; transition:background .2s; }
-    .cal-nav:hover { background:var(--pink-light); }
-    .cal-title { font-size:17px; font-weight:bold; }
-    .cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:3px; }
-    .cal-dh { text-align:center; font-size:11px; color:var(--text-sub); padding:3px 0; font-weight:700; }
-    .cal-d { aspect-ratio:1; display:flex; flex-direction:column; align-items:center; justify-content:center; border-radius:8px; cursor:pointer; font-size:13px; transition:all .15s; position:relative; }
-    .cal-d:hover { background:var(--amber-light); }
-    .cal-d.has { background:var(--pink-bg); font-weight:700; color:var(--pink); }
-    .cal-d.today { background:var(--pink); color:white; font-weight:bold; }
-    .cal-d.none { cursor:default; }
-    .cal-dot { width:4px; height:4px; background:var(--pink); border-radius:50%; position:absolute; bottom:3px; }
-    .cal-d.today .cal-dot { background:white; }
+    .cal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+    .cal-nav{background:var(--border);border:none;border-radius:6px;padding:5px 12px;cursor:pointer;font-size:14px;color:var(--text);transition:background .2s;}
+    .cal-nav:hover{background:rgba(255,215,0,.2);}
+    .cal-title{font-size:15px;font-weight:bold;color:var(--gold);}
+    .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;}
+    .cal-dh{text-align:center;font-size:10px;color:var(--text-sub);padding:3px 0;}
+    .cal-d{aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:6px;cursor:pointer;font-size:12px;transition:all .15s;position:relative;color:var(--text-sub);}
+    .cal-d:hover{background:rgba(255,215,0,.1);}
+    .cal-d.has{background:rgba(255,215,0,.1);font-weight:700;color:var(--gold);}
+    .cal-d.today{background:var(--gold);color:#000;font-weight:bold;}
+    .cal-d.none{cursor:default;}
+    .cal-dot{width:3px;height:3px;background:var(--gold);border-radius:50%;position:absolute;bottom:2px;}
+    .cal-d.today .cal-dot{background:#000;}
 
     /* Stats */
-    .stats-4 { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px; }
-    @media(min-width:500px){ .stats-4 { grid-template-columns:repeat(4,1fr); } }
-    .stat-box { text-align:center; }
-    .stat-big { font-size:38px; font-weight:bold; color:var(--pink); line-height:1; }
-    .stat-lbl { font-size:12px; color:var(--text-sub); margin-top:3px; }
-    .bar-chart { display:flex; flex-direction:column; gap:8px; }
-    .bar-row { display:flex; align-items:center; gap:8px; }
-    .bar-lbl { width:64px; font-size:12px; text-align:right; color:var(--text-sub); flex-shrink:0; overflow:hidden; white-space:nowrap; }
-    .bar-track { flex:1; height:14px; background:#eee; border-radius:7px; overflow:hidden; }
-    .bar-fill { height:100%; background:linear-gradient(90deg,var(--green-light),var(--green)); border-radius:7px; transition:width .8s; min-width:2px; }
-    .bar-cnt { font-size:12px; font-weight:700; width:22px; color:var(--text); }
+    .stats-4{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+    @media(min-width:500px){.stats-4{grid-template-columns:repeat(4,1fr);}}
+    .stat-box{text-align:center;padding:12px 8px;}
+    .stat-big{font-size:32px;font-weight:bold;color:var(--gold);line-height:1;}
+    .stat-lbl{font-size:11px;color:var(--text-sub);margin-top:3px;}
+    .bar-chart{display:flex;flex-direction:column;gap:6px;}
+    .bar-row{display:flex;align-items:center;gap:6px;}
+    .bar-lbl{width:56px;font-size:11px;text-align:right;color:var(--text-sub);flex-shrink:0;}
+    .bar-track{flex:1;height:12px;background:#222;border-radius:6px;overflow:hidden;}
+    .bar-fill{height:100%;background:linear-gradient(90deg,rgba(255,215,0,.4),var(--gold));border-radius:6px;transition:width .8s;min-width:2px;}
+    .bar-cnt{font-size:11px;font-weight:700;width:20px;color:var(--text);}
 
     /* Memory */
-    .memory-inner { text-align:center; padding:20px 10px; }
-    .mem-date { font-size:13px; color:var(--text-sub); margin-bottom:10px; }
-    .mem-text { font-size:19px; line-height:1.7; font-weight:500; margin-bottom:14px; }
-    .mem-cat { display:inline-block; font-size:13px; background:var(--green-light); color:var(--green); padding:4px 14px; border-radius:20px; margin-bottom:18px; }
-    .shuffle-btn { background:var(--amber-light); border:none; border-radius:12px; padding:11px 22px; font-size:14px; cursor:pointer; color:#a0640a; font-weight:700; transition:all .2s; }
-    .shuffle-btn:active { transform:scale(.96); }
-    .react-row { display:flex; gap:10px; justify-content:center; margin-top:12px; }
-    .react-btn { border:none; border-radius:12px; padding:11px 18px; cursor:pointer; font-size:13px; font-weight:700; transition:all .2s; }
-    .react-btn:active { transform:scale(.96); }
-    .rb-still { background:var(--green-light); color:var(--green); }
-    .rb-new { background:var(--amber-light); color:#a0640a; }
+    .memory-inner{text-align:center;padding:16px 8px;}
+    .mem-date{font-size:12px;color:var(--text-sub);margin-bottom:8px;}
+    .mem-text{font-size:17px;line-height:1.7;font-weight:500;margin-bottom:12px;}
+    .mem-cat{display:inline-block;font-size:12px;background:rgba(82,183,136,.15);color:var(--green);padding:3px 12px;border-radius:14px;margin-bottom:14px;}
+    .shuffle-btn{background:rgba(255,215,0,.12);border:1px solid rgba(255,215,0,.3);border-radius:8px;padding:9px 18px;font-size:13px;cursor:pointer;color:var(--gold);font-weight:700;transition:all .2s;}
+    .shuffle-btn:active{transform:scale(.96);}
+    .react-row{display:flex;gap:8px;justify-content:center;margin-top:10px;}
+    .react-btn{border:none;border-radius:8px;padding:9px 14px;cursor:pointer;font-size:12px;font-weight:700;transition:all .2s;}
+    .react-btn:active{transform:scale(.96);}
+    .rb-still{background:rgba(82,183,136,.15);color:var(--green);}
+    .rb-new{background:rgba(255,215,0,.12);color:var(--gold);}
 
     /* Modal */
-    .overlay { position:fixed; inset:0; background:rgba(0,0,0,.38); z-index:200; display:none; align-items:flex-end; }
-    .overlay.open { display:flex; }
-    .sheet { background:white; border-radius:22px 22px 0 0; padding:20px 16px; width:100%; max-height:72vh; overflow-y:auto; }
-    .sheet-title { font-size:17px; font-weight:bold; margin-bottom:14px; display:flex; justify-content:space-between; align-items:center; }
-    .sheet-close { background:var(--border); border:none; border-radius:50%; width:28px; height:28px; cursor:pointer; font-size:15px; display:flex; align-items:center; justify-content:center; }
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;display:none;align-items:flex-end;}
+    .overlay.open{display:flex;}
+    .sheet{background:var(--card);border-radius:16px 16px 0 0;padding:16px;width:100%;max-height:72vh;overflow-y:auto;}
+    .sheet-title{font-size:15px;font-weight:bold;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;color:var(--gold);}
+    .sheet-close{background:var(--border);border:none;border-radius:50%;width:26px;height:26px;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;color:var(--text);}
+
+    /* Achievements */
+    .ach-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;background:rgba(255,255,255,.03);border:1px solid var(--border);margin-bottom:5px;}
+    .ach-item.on{background:rgba(255,215,0,.06);border-color:rgba(255,215,0,.2);}
+    .ach-icon{font-size:22px;width:36px;text-align:center;flex-shrink:0;}
+    .ach-info h4{font-size:12px;}
+    .ach-info p{font-size:10px;color:var(--text-sub);}
+    .ach-item.off .ach-icon{filter:grayscale(1);opacity:.3;}
+    .ach-item.off .ach-info{opacity:.4;}
 
     /* Toast & Particle */
-    .toast { position:fixed; top:74px; left:50%; transform:translateX(-50%) translateY(-18px); background:rgba(82,183,136,.95); color:white; padding:11px 22px; border-radius:22px; font-size:13px; font-weight:700; z-index:500; opacity:0; transition:all .3s; white-space:nowrap; box-shadow:0 4px 18px rgba(0,0,0,.14); }
-    .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
-    .particle { position:fixed; pointer-events:none; z-index:499; font-size:18px; animation:pfall 1.6s ease-in forwards; }
-    @keyframes pfall { 0%{transform:translateY(-10px) rotate(0deg);opacity:1} 100%{transform:translateY(100vh) rotate(400deg);opacity:0} }
+    .toast{position:fixed;top:60px;left:50%;transform:translateX(-50%) translateY(-16px);background:rgba(82,183,136,.95);color:white;padding:9px 18px;border-radius:16px;font-size:12px;font-weight:700;z-index:500;opacity:0;transition:all .3s;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,.3);}
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+    .particle{position:fixed;pointer-events:none;z-index:499;font-size:16px;animation:pfall 1.6s ease-in forwards;}
+    @keyframes pfall{0%{transform:translateY(-10px) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(400deg);opacity:0}}
+
+    /* Sub-tab for adventure */
+    .sub-tabs{display:flex;gap:4px;margin-bottom:10px;overflow-x:auto;padding-bottom:4px;}
+    .sub-tab{padding:5px 12px;border-radius:6px;font-size:11px;border:1px solid var(--border);background:var(--card2);color:var(--text-sub);cursor:pointer;white-space:nowrap;transition:all .2s;}
+    .sub-tab.active{background:rgba(255,215,0,.12);border-color:rgba(255,215,0,.3);color:var(--gold);}
+    .sub-content{display:none;}.sub-content.active{display:block;}
+
+    /* Monster book */
+    .mon-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
+    .mon-cell{text-align:center;padding:8px 4px;border-radius:6px;background:rgba(255,255,255,.03);border:1px solid var(--border);}
+    .mon-cell.seen{background:rgba(255,215,0,.05);border-color:rgba(255,215,0,.15);}
+    .mon-cell.unseen .mon-sprite{filter:brightness(0);opacity:.2;}
+    .mon-cell .mon-name{font-size:8px;color:var(--text-sub);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .mon-cell.seen .mon-name{color:var(--text);}
+    .mon-count{font-size:8px;color:var(--gold);}
+
+    .hero-sprite{image-rendering:pixelated;image-rendering:crisp-edges;}
   </style>
 </head>
 <body>
@@ -209,7 +265,8 @@
   <h1>⚔️ 感謝クエスト</h1>
   <div class="header-badges">
     <span class="badge" id="hLevel">⚔️ Lv.1 旅人</span>
-    <span class="badge" id="hStreak">🔥 0日連続</span>
+    <span class="badge" id="hFloor">🏰 1F</span>
+    <span class="badge" id="hStreak">🔥 0日</span>
     <span class="badge" id="hTotal">🙏 0件</span>
   </div>
 </div>
@@ -235,7 +292,7 @@
       </div>
     </div>
     <div class="card">
-      <div class="card-title">✍️ 今日の感謝を記録</div>
+      <div class="card-title">✍️ 感謝を記録してモンスターと戦え！</div>
       <div class="form-group">
         <label class="form-label">感謝の内容</label>
         <textarea id="eText" rows="3" placeholder="例：美味しいランチが食べられた、友人に助けてもらった…"></textarea>
@@ -263,65 +320,109 @@
           <button class="mood-btn" onclick="pickMood(this,5)">🥰</button>
         </div>
       </div>
-      <button class="save-btn" onclick="saveEntry()">🌱 感謝を記録する</button>
+      <button class="save-btn" onclick="saveEntry()">⚔️ 感謝を記録して戦闘開始！</button>
     </div>
     <div class="sec-title">📝 今日の記録</div>
     <div id="todayList"></div>
   </div>
 
-  <!-- QUEST -->
-  <div class="tab" id="tab-quest">
-    <div class="card" id="questCard">
-      <div class="card-title">⚔️ 感謝クエスト</div>
-      <div class="quest-scene">
-        <span class="quest-scene-cloud">☁️</span>
-        <span class="quest-scene-cloud2">☁️</span>
-        <div class="hero-shadow"></div>
-        <div id="heroSprite" class="hero-sprite"></div>
+  <!-- ADVENTURE -->
+  <div class="tab" id="tab-adventure">
+    <div class="sub-tabs">
+      <button class="sub-tab active" onclick="switchSub(this,'sub-tower')">🏰 塔</button>
+      <button class="sub-tab" onclick="switchSub(this,'sub-equip')">🎒 装備</button>
+      <button class="sub-tab" onclick="switchSub(this,'sub-boss')">👹 ボス</button>
+      <button class="sub-tab" onclick="switchSub(this,'sub-master')">👴 師匠</button>
+      <button class="sub-tab" onclick="switchSub(this,'sub-book')">📖 図鑑</button>
+      <button class="sub-tab" onclick="switchSub(this,'sub-ach')">🏆 実績</button>
+    </div>
+
+    <!-- Tower -->
+    <div class="sub-content active" id="sub-tower">
+      <div class="dq-window">
+        <div class="tower-header">
+          <div class="tower-floor-big" id="tFloorBig">1F</div>
+          <div class="tower-area" id="tAreaName">草原の入口</div>
+        </div>
+        <div class="tower-bar-wrap">
+          <div class="tower-bar-label">1F</div>
+          <div class="tower-bar-track"><div class="tower-bar-fill" id="tBarFill" style="width:1%"></div></div>
+          <div class="tower-bar-label">99F</div>
+        </div>
+        <div class="tower-boss-next" id="tBossNext"></div>
       </div>
-      <div class="quest-lv-wrap">
-        <div class="quest-lv-badge" id="questLvBadge">Lv.1</div>
-        <div class="quest-lv-name"  id="questLvName">旅人</div>
-        <div class="quest-lv-story" id="questLvStory">感謝の旅が始まったばかり…</div>
-      </div>
-      <div class="quest-stats">
-        <div class="qstat-row">
-          <div class="qstat-icon">❤️</div><div class="qstat-lbl">HP</div>
-          <div class="qstat-track"><div class="qstat-fill qstat-hp"  id="qHpBar"  style="width:0%"></div></div>
-          <div class="qstat-val" id="qHpVal">20</div>
+      <div class="dq-window">
+        <div class="dq-title">⚔️ 勇者ステータス</div>
+        <div class="adv-hero-wrap">
+          <div id="advHeroSprite" class="adv-hero-sprite"></div>
+          <div class="adv-hero-stats">
+            <div style="font-size:13px;font-weight:bold;margin-bottom:6px;color:var(--gold);">
+              <span id="advLvBadge">Lv.1</span> <span id="advTierName">旅人</span>
+            </div>
+            <div class="adv-stat-row"><div class="adv-stat-icon">❤️</div><div class="adv-stat-lbl">HP</div><div class="adv-stat-bar"><div class="adv-stat-fill hp" id="aHpBar"></div></div><div class="adv-stat-val" id="aHpVal">20</div></div>
+            <div class="adv-stat-row"><div class="adv-stat-icon">⚔️</div><div class="adv-stat-lbl">ATK</div><div class="adv-stat-bar"><div class="adv-stat-fill atk" id="aAtkBar"></div></div><div class="adv-stat-val" id="aAtkVal">5</div></div>
+            <div class="adv-stat-row"><div class="adv-stat-icon">🛡️</div><div class="adv-stat-lbl">DEF</div><div class="adv-stat-bar"><div class="adv-stat-fill def" id="aDefBar"></div></div><div class="adv-stat-val" id="aDefVal">3</div></div>
+            <div class="adv-stat-row"><div class="adv-stat-icon">✨</div><div class="adv-stat-lbl">MAG</div><div class="adv-stat-bar"><div class="adv-stat-fill mag" id="aMagBar"></div></div><div class="adv-stat-val" id="aMagVal">—</div></div>
+          </div>
         </div>
-        <div class="qstat-row">
-          <div class="qstat-icon">⚔️</div><div class="qstat-lbl">ATK</div>
-          <div class="qstat-track"><div class="qstat-fill qstat-atk" id="qAtkBar" style="width:0%"></div></div>
-          <div class="qstat-val" id="qAtkVal">5</div>
-        </div>
-        <div class="qstat-row">
-          <div class="qstat-icon">🛡️</div><div class="qstat-lbl">DEF</div>
-          <div class="qstat-track"><div class="qstat-fill qstat-def" id="qDefBar" style="width:0%"></div></div>
-          <div class="qstat-val" id="qDefVal">3</div>
-        </div>
-        <div class="qstat-row">
-          <div class="qstat-icon">✨</div><div class="qstat-lbl">MAG</div>
-          <div class="qstat-track"><div class="qstat-fill qstat-mag" id="qMagBar" style="width:0%"></div></div>
-          <div class="qstat-val" id="qMagVal">—</div>
+        <div style="margin-top:8px;">
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-sub);margin-bottom:4px;">
+            <span id="advProgLabel">次のLvまで</span><span id="advProgCount">あと1件</span>
+          </div>
+          <div class="tower-bar-track"><div class="tower-bar-fill" id="advProgBar" style="width:0%"></div></div>
         </div>
       </div>
-      <div class="quest-progress-wrap">
-        <div class="quest-prog-labels">
-          <span id="questProgLabel">次のレベルまで</span>
-          <span id="questProgCount">あと1件</span>
-        </div>
-        <div class="quest-prog-track"><div class="quest-prog-fill" id="questProgBar" style="width:0%"></div></div>
+      <div class="dq-window">
+        <div class="dq-title" id="tStoryTitle">📖 冒険の記録</div>
+        <div style="font-size:12px;line-height:1.7;color:#ccc;" id="tStoryText">感謝の旅が始まったばかり。装備も心もまだ貧弱だ。</div>
       </div>
     </div>
 
-    <div class="card">
-      <div class="card-title">🎒 現在の装備</div>
-      <div class="equip-list" id="equipList"></div>
+    <!-- Equipment -->
+    <div class="sub-content" id="sub-equip">
+      <div class="card">
+        <div class="card-title">⚔️ 通常装備</div>
+        <div id="equipList"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">🌟 幸せ装備（ボスドロップ）</div>
+        <div class="happy-grid" id="happyGrid"></div>
+      </div>
     </div>
 
-    <div class="sec-title">🏆 実績バッジ</div>
-    <div class="card"><div class="ach-list" id="achList"></div></div>
+    <!-- Boss -->
+    <div class="sub-content" id="sub-boss">
+      <div class="card">
+        <div class="card-title">👹 ボス討伐リスト</div>
+        <div id="bossList"></div>
+      </div>
+    </div>
+
+    <!-- Master -->
+    <div class="sub-content" id="sub-master">
+      <div class="card">
+        <div class="card-title">👴 師匠の教え</div>
+        <div class="master-count" id="masterCount">0 / 100</div>
+        <div id="masterList"></div>
+      </div>
+    </div>
+
+    <!-- Monster Book -->
+    <div class="sub-content" id="sub-book">
+      <div class="card">
+        <div class="card-title">📖 モンスター図鑑</div>
+        <div class="master-count" id="monBookCount">0 / 42</div>
+        <div class="mon-grid" id="monGrid"></div>
+      </div>
+    </div>
+
+    <!-- Achievements -->
+    <div class="sub-content" id="sub-ach">
+      <div class="card">
+        <div class="card-title">🏆 実績バッジ</div>
+        <div id="achList"></div>
+      </div>
+    </div>
   </div>
 
   <!-- CALENDAR -->
@@ -353,22 +454,47 @@
   <!-- MEMORY -->
   <div class="tab" id="tab-memory">
     <div class="card" id="memCard">
-      <div class="empty-state"><div class="empty-icon">💫</div><p>記録を増やすと、過去の感謝が<br>ここに現れます</p></div>
+      <div class="empty-state"><div class="empty-icon">💫</div><p>記録を増やすと、過去の感謝がここに現れます</p></div>
     </div>
     <div class="card" id="memReact" style="display:none">
       <div class="card-title">💭 この感謝、今でも感じますか？</div>
       <div class="react-row">
         <button class="react-btn rb-still" onclick="reactMem('still')">✨ まだ感じる</button>
-        <button class="react-btn rb-new"   onclick="reactMem('new')">🌱 新しい感謝を記録</button>
+        <button class="react-btn rb-new" onclick="reactMem('new')">🌱 新しい感謝を記録</button>
       </div>
-    </div>
-    <div class="card">
-      <div class="card-title">📅 記録のある月</div>
-      <div id="memHistory" style="font-size:13px;color:var(--text-sub);line-height:2.1;"></div>
     </div>
   </div>
 </div>
 
+<!-- Battle Overlay -->
+<div class="battle-overlay" id="battleOverlay">
+  <button class="battle-skip" onclick="skipBattle()">▶▶ スキップ</button>
+  <div class="battle-monster-area">
+    <div class="battle-monster-name" id="bMonName"></div>
+    <div class="battle-monster-sprite" id="bMonSprite"></div>
+    <div class="battle-hp-wrap">
+      <div class="battle-hp-label" id="bMonHpLabel">HP</div>
+      <div class="battle-hp-track"><div class="battle-hp-fill" id="bMonHpFill" style="width:100%"></div></div>
+    </div>
+  </div>
+  <div class="battle-msg-window" id="bMsgWindow"><p>&nbsp;</p></div>
+</div>
+
+<!-- Master Overlay -->
+<div class="master-overlay" id="masterOverlay">
+  <div class="master-box">
+    <div class="master-portrait">👴</div>
+    <div class="master-window">
+      <div class="master-label">師匠の教え</div>
+      <div class="master-quote-text" id="masterQuoteText"></div>
+      <div class="master-detail" id="masterDetailText"></div>
+      <div class="master-exp" id="masterExpText"></div>
+    </div>
+    <button class="master-close" onclick="closeMaster()">▶ 心に刻んだ</button>
+  </div>
+</div>
+
+<!-- Day detail overlay -->
 <div class="overlay" id="overlay" onclick="closeOverlay(event)">
   <div class="sheet">
     <div class="sheet-title">
@@ -383,187 +509,244 @@
 
 <nav class="nav">
   <button class="nav-btn active" onclick="switchTab('home',this)"><span class="icon">🏠</span><span>ホーム</span></button>
-  <button class="nav-btn"        onclick="switchTab('quest',this)"><span class="icon">⚔️</span><span>クエスト</span></button>
-  <button class="nav-btn"        onclick="switchTab('calendar',this)"><span class="icon">📅</span><span>カレンダー</span></button>
-  <button class="nav-btn"        onclick="switchTab('stats',this)"><span class="icon">📊</span><span>統計</span></button>
-  <button class="nav-btn"        onclick="switchTab('memory',this)"><span class="icon">💫</span><span>あの日</span></button>
+  <button class="nav-btn" onclick="switchTab('adventure',this)"><span class="icon">⚔️</span><span>冒険</span></button>
+  <button class="nav-btn" onclick="switchTab('calendar',this)"><span class="icon">📅</span><span>カレンダー</span></button>
+  <button class="nav-btn" onclick="switchTab('stats',this)"><span class="icon">📊</span><span>統計</span></button>
+  <button class="nav-btn" onclick="switchTab('memory',this)"><span class="icon">💫</span><span>あの日</span></button>
 </nav>
 
 <script>
-// ── Data ──
-const KEY = 'kansha_v2';
-function load(){ try{ const r=localStorage.getItem(KEY); return r?JSON.parse(r):def(); }catch{return def();} }
-function def(){ return {entries:[],tapTotal:0,tapToday:0,tapDate:'',streak:0,best:0,lastDate:''}; }
-function save(){ localStorage.setItem(KEY,JSON.stringify(D)); }
-let D = load();
-
-// ── Utils ──
-const todayStr = () => new Date().toISOString().slice(0,10);
-const fmtDate  = s => { const d=new Date(s+'T00:00:00'); return `${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日`; };
-const fmtTime  = ts => { const d=new Date(ts); return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`; };
-const esc      = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-
-function toast(msg, color='rgba(82,183,136,.95)'){
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.style.background=color;
-  t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2800);
+// ════════════════════════════════════════
+//  DATA STORAGE
+// ════════════════════════════════════════
+const KEY='kansha_v2';
+function def(){return{entries:[],tapTotal:0,tapToday:0,tapDate:'',streak:0,best:0,lastDate:'',gold:0,bossDefeated:[],happyEquips:[],masterSeen:[],monstersDefeated:{},masterBonus:0};}
+function load(){
+  try{const r=localStorage.getItem(KEY);const d=r?JSON.parse(r):def();
+  if(!d.gold)d.gold=0;if(!d.bossDefeated)d.bossDefeated=[];if(!d.happyEquips)d.happyEquips=[];
+  if(!d.masterSeen)d.masterSeen=[];if(!d.monstersDefeated)d.monstersDefeated={};if(d.masterBonus===undefined)d.masterBonus=0;
+  return d;}catch{return def();}
 }
-function burst(emojis=['🌸','✨','💛','🌿','🎉'],n=8){
-  for(let i=0;i<n;i++) setTimeout(()=>{
-    const p=document.createElement('div'); p.className='particle';
-    p.textContent=emojis[Math.floor(Math.random()*emojis.length)];
-    p.style.left=Math.random()*92+'vw'; p.style.top='-20px';
-    document.body.appendChild(p); setTimeout(()=>p.remove(),1700);
-  },i*100);
-}
+function save(){localStorage.setItem(KEY,JSON.stringify(D));}
+let D=load();
 
-// ── Counter ──
-function tap(){
-  const t=todayStr();
-  if(D.tapDate!==t){D.tapToday=0;D.tapDate=t;}
-  D.tapToday++;D.tapTotal++;save();renderCounter();
-  const btn=document.getElementById('cBtn');
-  btn.style.transform='scale(.86)'; setTimeout(()=>btn.style.transform='',140);
-  if([1,10,50,100,500,1000].includes(D.tapTotal)){
-    burst(['🙏','💛','✨','🌸']); toast(`🎉 累計${D.tapTotal}回のありがとうを達成！`);
-  }
-}
-function renderCounter(){
-  document.getElementById('cToday').textContent = D.tapDate===todayStr()?D.tapToday:0;
-  document.getElementById('cTotal').textContent = D.tapTotal;
+// ════════════════════════════════════════
+//  MONSTER PIXEL ART SHAPES
+// ════════════════════════════════════════
+const MSH={
+  slime:{w:7,d:['0011100','0111110','1121210','1111111','0111110','0011100']},
+  bat:{w:9,d:['110000011','111000111','011111110','001212100','000111000','000010000']},
+  knight:{w:8,d:['00333300','03333330','03233230','00333300','01111110','11131311','01111110','00111100','00100100','00100100']},
+  ghost:{w:7,d:['0011100','0111110','1121210','1111111','1111111','0111110','0101010','1001001']},
+  dragon:{w:10,d:['0300000300','0110000110','1111111110','1211112110','1111111100','0111111000','0011111100','0111111110','1101110011','1000010001']},
+  beast:{w:8,d:['03300000','31110000','12111110','11111111','01111110','01011010','01000010']},
+  golem:{w:8,d:['00111100','01111110','01211210','01111110','11111111','11111111','01100110','01100110','01100110']},
+  snake:{w:9,d:['000011000','000111100','001211200','111111000','011111110','000110011']},
+  shroom:{w:7,d:['0033300','0333330','3333333','3333333','0011100','0011100','0111110','0011100']}
+};
+
+function buildMonSVG(shape,colors,px){
+  px=px||8;const s=MSH[shape];if(!s)return'';
+  const P=[null,colors[0],colors[1],colors[2]||colors[0]];
+  let r='';s.d.forEach((row,y)=>{for(let x=0;x<row.length;x++){const c=+row[x];if(!c)continue;r+=`<rect x="${x*px}" y="${y*px}" width="${px}" height="${px}" fill="${P[c]}"/>`;}});
+  return`<svg width="${s.w*px}" height="${s.d.length*px}" viewBox="0 0 ${s.w*px} ${s.d.length*px}" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated">${r}</svg>`;
 }
 
-// ── Form ──
-let selCat='',selMood=0;
-function pickCat(btn,cat){ document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('sel')); btn.classList.add('sel');selCat=cat; }
-function pickMood(btn,m){  document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('sel')); btn.classList.add('sel');selMood=m; }
-
-// ── Save Entry ──
-function saveEntry(){
-  const text=document.getElementById('eText').value.trim();
-  if(!text){toast('💭 感謝の内容を入力してください','rgba(255,143,171,.95)');return;}
-
-  const prevLv=getLevel(); const prevTier=getTier(prevLv);
-
-  D.entries.unshift({id:Date.now().toString(),date:todayStr(),text,category:selCat||'✨ その他',mood:selMood||3,ts:Date.now()});
-  calcStreak();save();
-
-  document.getElementById('eText').value='';
-  selCat='';selMood=0;
-  document.querySelectorAll('.cat-btn,.mood-btn').forEach(b=>b.classList.remove('sel'));
-
-  renderAll();
-
-  const newLv=getLevel(); const newTier=getTier(newLv);
-  if(newLv>prevLv){
-    const sprite=document.getElementById('heroSprite');
-    if(sprite){sprite.classList.remove('hero-lvup');void sprite.offsetWidth;sprite.classList.add('hero-lvup');setTimeout(()=>sprite.classList.remove('hero-lvup'),600);}
-    if(newTier>prevTier){
-      burst(['⚔️','🌟','🎊','💎','👑','✨'],14);
-      toast(`🎊 職業チェンジ！ ${TIER_NAMES[newTier]} になった！ Lv.${newLv}`,'rgba(183,28,28,.95)');
-    } else {
-      burst(['⚔️','⭐','🎉','💎','✨'],10);
-      toast(`🎉 レベルアップ！ Lv.${newLv} になった！`,'rgba(108,92,231,.95)');
-    }
-  } else {
-    burst();toast('🌸 感謝を記録しました！');
-  }
-}
-
-function calcStreak(){
-  const t=todayStr(); if(D.lastDate===t)return;
-  const prev=new Date();prev.setDate(prev.getDate()-1);
-  D.streak=D.lastDate===prev.toISOString().slice(0,10)?D.streak+1:1;
-  D.best=Math.max(D.best,D.streak); D.lastDate=t;
-}
-function delEntry(id){D.entries=D.entries.filter(e=>e.id!==id);save();renderTodayList();updateHeader();}
-
-// ── Render Today ──
-const moodE=['','😐','🙂','😊','😄','🥰'];
-function renderTodayList(){
-  const list=D.entries.filter(e=>e.date===todayStr());
-  const el=document.getElementById('todayList');
-  if(!list.length){el.innerHTML=`<div class="empty-state"><div class="empty-icon">🌸</div><p>まだ今日の記録がありません<br>最初の感謝を記録してみましょう！</p></div>`;return;}
-  el.innerHTML=list.map(e=>`<div class="entry-item">
-    <button class="entry-del" onclick="delEntry('${e.id}')">✕</button>
-    <div class="entry-text">${esc(e.text)}</div>
-    <div class="entry-meta"><span class="entry-cat">${e.category}</span><span>${moodE[e.mood]}</span><span class="entry-time">${fmtTime(e.ts)}</span></div>
-  </div>`).join('');
-}
-
-// ── Header ──
-function updateHeader(){
-  const lv=getLevel();const tier=getTier(lv);
-  document.getElementById('hLevel').textContent=`⚔️ Lv.${lv} ${TIER_NAMES[tier]}`;
-  document.getElementById('hStreak').textContent=`🔥 ${D.streak}日連続`;
-  document.getElementById('hTotal').textContent=`🙏 ${D.entries.length}件`;
-}
-
-// ── Prompt ──
-const PROMPTS=[
-  {e:'💭',t:'今日、誰かに感謝したいことはありましたか？'},
-  {e:'🌤',t:'何気ない日常の中に、小さな幸せはありましたか？'},
-  {e:'💛',t:'今日、あなたを助けてくれた人はいましたか？'},
-  {e:'☀️',t:'今日の体験で、ポジティブなことを一つ見つけてみましょう'},
-  {e:'🌸',t:'今日の自分自身を褒めてあげることはありますか？'},
-  {e:'🎵',t:'今日、心が温かくなった瞬間はありましたか？'},
-  {e:'🌙',t:'この1日で、何かに「ありがとう」と思いましたか？'},
-  {e:'✨',t:'当たり前に思っていることに、感謝してみましょう'},
-  {e:'🤝',t:'誰かの優しさを受け取りましたか？'},
-  {e:'🌈',t:'今日の小さな喜びを記録してみましょう'},
+// ════════════════════════════════════════
+//  MONSTERS (42体)
+// ════════════════════════════════════════
+// [name, shape, [body,eye,accent], hp, atk, def, exp, gold, floorMin, floorMax]
+const MONS=[
+  // 草原 1-9F
+  ['プルリン','slime',['#4FC3F7','#0D47A1','#B3E5FC'],8,3,1,4,3,1,3],
+  ['プルリンベス','slime',['#EF5350','#7F0000','#FFCDD2'],12,5,2,6,5,2,5],
+  ['ヤミガラス','bat',['#4A148C','#FF6F00','#7B1FA2'],15,7,3,8,6,3,6],
+  ['ツノウサギ','beast',['#8D6E63','#212121','#D7CCC8'],10,6,2,5,4,4,7],
+  ['ニセヨロイ','knight',['#757575','#D32F2F','#BDBDBD'],22,10,6,12,10,6,9],
+  // 暗い森 11-19F
+  ['ドクロバット','bat',['#2E7D32','#FFFF00','#66BB6A'],30,14,7,16,12,11,13],
+  ['マヨイビト','ghost',['#E0E0E0','#311B92','#F5F5F5'],25,11,5,14,10,11,14],
+  ['クサリゾンビ','knight',['#558B2F','#F44336','#8BC34A'],38,16,9,20,15,13,16],
+  ['モリノマジン','golem',['#33691E','#FF6F00','#689F38'],45,18,12,24,18,14,17],
+  ['ヤミキノコ','shroom',['#6A1B9A','#E040FB','#9C27B0'],35,15,8,18,14,16,19],
+  // 洞窟 21-29F
+  ['ホネナイト','knight',['#ECEFF1','#D32F2F','#FAFAFA'],55,24,14,30,22,21,23],
+  ['イワゴーレム','golem',['#795548','#FF6F00','#A1887F'],70,22,20,35,28,22,25],
+  ['ドクグモ','beast',['#4A148C','#F44336','#7B1FA2'],50,28,12,32,24,23,26],
+  ['コウモリキング','bat',['#FFD700','#D32F2F','#FFF176'],60,26,15,38,30,25,28],
+  ['ツチノリュウ','dragon',['#6D4C41','#FF6F00','#8D6E63'],75,30,18,42,35,27,29],
+  // 地下水脈 31-39F
+  ['ウミヘビ','snake',['#0288D1','#FFFF00','#4FC3F7'],80,38,22,48,35,31,33],
+  ['カイリュウ','dragon',['#0097A7','#FF6F00','#4DD0E1'],100,42,28,58,45,32,35],
+  ['シェルガード','knight',['#00ACC1','#D32F2F','#80DEEA'],90,36,30,52,40,33,36],
+  ['ダイオウガニ','beast',['#E64A19','#212121','#FF8A65'],95,40,25,55,42,35,38],
+  ['ウズシオマ','ghost',['#01579B','#B3E5FC','#0277BD'],85,35,20,50,38,37,39],
+  // 炎の回廊 41-49F
+  ['ヒノタマ','ghost',['#FF6D00','#FFFF00','#FFAB00'],110,52,32,65,50,41,43],
+  ['ヨウガンマ','golem',['#BF360C','#FFFF00','#E64A19'],130,48,38,72,55,42,45],
+  ['ホノオトカゲ','beast',['#D84315','#FFFF00','#FF7043'],120,55,30,68,52,43,46],
+  ['ヘルアーマー','knight',['#B71C1C','#FFFF00','#E53935'],145,58,42,78,60,45,48],
+  ['カエンリュウ','dragon',['#E65100','#FFFF00','#FF9800'],155,62,35,85,65,47,49],
+  // 氷の回廊 51-59F
+  ['コオリネズミ','beast',['#B3E5FC','#0D47A1','#E1F5FE'],150,68,42,92,68,51,53],
+  ['フブキマ','ghost',['#E1F5FE','#1565C0','#FFFFFF'],160,65,45,98,72,52,55],
+  ['ツララナイト','knight',['#4FC3F7','#D32F2F','#B3E5FC'],180,72,52,105,78,53,56],
+  ['ヒョウガジュウ','beast',['#FFFFFF','#1565C0','#E3F2FD'],190,75,48,110,82,55,58],
+  ['コゴエルリュウ','dragon',['#4FC3F7','#D32F2F','#E1F5FE'],210,78,55,120,90,57,59],
+  // 天空の道 61-69F
+  ['ハネヘビ','snake',['#FFD700','#D32F2F','#FFEB3B'],200,82,55,118,88,61,63],
+  ['テンクウメ','bat',['#FFFFFF','#6A1B9A','#F3E5F5'],220,85,58,125,92,62,65],
+  ['カゼノセイレイ','ghost',['#A5D6A7','#1B5E20','#C8E6C9'],210,80,52,120,90,63,66],
+  ['グリフォン','beast',['#FFB300','#4E342E','#FFD54F'],240,90,65,135,100,65,68],
+  ['ソラノバンニン','knight',['#FFFFFF','#6A1B9A','#F5F5F5'],260,95,70,145,110,67,69],
+  // 闇の神殿 71-79F
+  ['ヤミノツカイ','ghost',['#4A148C','#FF1744','#7B1FA2'],270,105,68,155,115,71,74],
+  ['マカイキシ','knight',['#4A148C','#FF1744','#7B1FA2'],300,110,78,165,125,73,76],
+  ['アクマホウシ','shroom',['#880E4F','#FF1744','#AD1457'],280,115,65,160,120,75,78],
+  ['デスヨロイ','knight',['#212121','#FF1744','#424242'],330,120,88,180,140,77,79],
+  // 魔王の間〜最終試練 81-98F
+  ['シノツカイ','knight',['#000000','#FF1744','#333333'],380,140,95,220,165,81,89],
+  ['リュウオウノカゲ','dragon',['#4A148C','#FFD700','#6A1B9A'],420,155,105,260,190,85,93],
+  ['ヤミノダイマオウ','knight',['#000000','#FFD700','#212121'],480,175,120,300,220,91,98],
 ];
-function updatePrompt(){
-  const td=D.entries.filter(e=>e.date===todayStr()).length;
-  let p;
-  if(td>=5)p={e:'🌟',t:`今日もう${td}つの感謝を記録！素晴らしい一日ですね ✨`};
-  else if(td>=1)p=PROMPTS[Math.floor(Math.random()*PROMPTS.length)];
-  else p=PROMPTS[0];
-  document.getElementById('promptEmoji').textContent=p.e;
-  document.getElementById('promptText').textContent=p.t;
-}
 
-// ════════════════════════════════════════════
-//  ⚔️  QUEST / RPG  —  Lv 1 〜 99
-// ════════════════════════════════════════════
-const MAX_LV = 99;
-
-// 感謝記録数 → レベル到達に必要な件数
-function reqEntries(lv){
-  if(lv<=1) return 0;
-  return Math.floor(Math.pow(lv-1,2)*0.15+(lv-1)*1.5);
-}
-// 現在のレベル (1〜99)
-function getLevel(){
-  const n=D.entries.length;
-  for(let lv=MAX_LV;lv>=2;lv--){ if(n>=reqEntries(lv)) return lv; }
-  return 1;
-}
-// ティア (0〜9) : 10レベルごとに職業変化
-function getTier(lv){
-  if(lv>=90) return 9;
-  return Math.floor((lv-1)/10);
-}
-// ステータス計算
-function getLvStats(lv){
-  return {
-    hp:  20+(lv-1)*8,
-    atk:  5+(lv-1)*3,
-    def:  3+(lv-1)*2,
-    mag:  lv>=10?(lv-9)*2:0,
-  };
-}
-// 次レベルまでの進捗
-function getLvProgress(lv){
-  if(lv>=MAX_LV) return {pct:100,remaining:0};
-  const curr=reqEntries(lv), next=reqEntries(lv+1), n=D.entries.length;
-  return {pct:Math.min(100,((n-curr)/(next-curr)*100)).toFixed(0), remaining:next-n};
-}
-
-// ── 職業名・ストーリー ──
-const TIER_NAMES=[
-  '旅人','見習い冒険者','冒険者','勇者見習い','勇者',
-  '魔法剣士','賢者','聖騎士','伝説の勇者','感謝の勇者王'
+// ════════════════════════════════════════
+//  BOSSES (10体)
+// ════════════════════════════════════════
+const BOSSES=[
+  {floor:10,name:'フアンノリュウ',sub:'不安の竜',shape:'dragon',colors:['#2E7D32','#FF6F00','#4CAF50'],hp:120,atk:30,def:15,exp:200,gold:150,drop:'幸せの靴下',dropIcon:'🧦',dropStat:'素早さ+5'},
+  {floor:20,name:'コドクノキョジン',sub:'孤独の巨人',shape:'golem',colors:['#546E7A','#FF6F00','#78909C'],hp:200,atk:55,def:30,exp:400,gold:250,drop:'幸せのズボン',dropIcon:'👖',dropStat:'防御力+8'},
+  {floor:30,name:'イカリノジャシン',sub:'怒りの邪神',shape:'golem',colors:['#C62828','#FFFF00','#E53935'],hp:300,atk:80,def:45,exp:600,gold:400,drop:'幸せの服',dropIcon:'👕',dropStat:'防御力+12'},
+  {floor:40,name:'シットノカイオウ',sub:'嫉妬の海王',shape:'dragon',colors:['#1565C0','#FF6F00','#42A5F5'],hp:420,atk:110,def:60,exp:850,gold:550,drop:'幸せのグローブ',dropIcon:'🧤',dropStat:'攻撃力+15'},
+  {floor:50,name:'コウカイノエンマ',sub:'後悔の閻魔',shape:'knight',colors:['#B71C1C','#FFFF00','#F44336'],hp:550,atk:140,def:80,exp:1100,gold:750,drop:'幸せのマント',dropIcon:'🦸',dropStat:'素早さ+20'},
+  {floor:60,name:'カナシミノヒョウオウ',sub:'悲しみの氷王',shape:'dragon',colors:['#4FC3F7','#D32F2F','#E1F5FE'],hp:700,atk:175,def:100,exp:1400,gold:950,drop:'幸せの兜',dropIcon:'⛑️',dropStat:'防御力+25'},
+  {floor:70,name:'キョウフノテンマ',sub:'恐怖の天魔',shape:'bat',colors:['#212121','#FF1744','#424242'],hp:880,atk:210,def:125,exp:1750,gold:1200,drop:'幸せの盾',dropIcon:'🛡️',dropStat:'防御力+30'},
+  {floor:80,name:'ゼツボウノマオウ',sub:'絶望の魔王',shape:'knight',colors:['#4A148C','#FFD700','#7B1FA2'],hp:1100,atk:250,def:150,exp:2200,gold:1500,drop:'幸せの鎧',dropIcon:'🏰',dropStat:'防御力+40'},
+  {floor:90,name:'キョムノシンカン',sub:'虚無の神官',shape:'ghost',colors:['#F5F5F5','#D32F2F','#FFFFFF'],hp:1400,atk:300,def:180,exp:2800,gold:2000,drop:'幸せの剣',dropIcon:'⚔️',dropStat:'攻撃力+50'},
+  {floor:99,name:'ヤミノカンジョウオウ',sub:'闇の感情王',shape:'dragon',colors:['#000000','#FFD700','#212121'],hp:2000,atk:380,def:220,exp:5000,gold:5000,drop:'感謝の王冠',dropIcon:'👑',dropStat:'全能力+99'},
 ];
+
+// ════════════════════════════════════════
+//  師匠の言葉 (100)
+// ════════════════════════════════════════
+const MW=[
+// Cat 0: 潜在意識を味方につける (1-9F)
+['どうなったら最高？','この質問を自分に投げ続けるだけで、脳は最高の未来を検索し始めます。'],
+['潜在意識は否定語がわからない','お金に困りたくないではなく、「豊かになりつつある」と意図してください。'],
+['完了形か現在進行形で願う','すでにそうなった、あるいはなりつつあるという言葉が現実を作ります。'],
+['自分と他人の区別がない','他人の成功を祝福することは、自分の成功を許可することと同じです。'],
+['感じていることが現実になる','思考そのものより、その根底にある「気分」が未来をオーダーしています。'],
+['今の現実は過去の願いが叶ったもの','今の環境を受け入れることが、未来を自由に創るスタートラインです。'],
+['観測した通りになる','世界を「ある」と思えばある現実を、「ない」と思えばない現実を観測します。'],
+['未来は「なる」ものではなく「既にある」','頭に浮かぶ夢は、別の時空で既に叶っている自分からの合図です。'],
+['Fake it until you make it','なりたい自分を演じ続けることで、やがて本物の人格へと変わります。'],
+['10秒以内にキャンセル','不平不満を言っても、10秒以内に「今のキャンセル！」と言えば徳はリセットされません。'],
+// Cat 1: まなゆいと自己受容 (11-19F)
+['受け入れ、認め、許し、愛しています','どんな醜い感情も全肯定することで浄化されます。'],
+['許せない自分を許すことは、最大の愛','完璧になれない自分を抱きしめた時、愛が宇宙大に広がります。'],
+['生きているだけで100点満点','何かを成し遂げなくても、存在していること自体が巨大な幸せです。'],
+['ジャッジを手放す','善悪の判断を止め、高い視点から出来事を眺めると波動が上がります。'],
+['悩みは片方の極に執着している状態','嫌いな人を認めた瞬間、悩みそのものが消滅します。'],
+['まず利害関係のない他人の幸せを祈れ','自己愛が難しい時は、外側から愛を練習します。'],
+['ブレス（祝福）','自分を攻撃する人にさえ祝福を送ると、自分の中の恐怖が消え、現実が動き出します。'],
+['感情を観察する','自分を空から見下ろすように客観視すると、ネガティブに翻弄されなくなります。'],
+['私を脱いだら神になる','エゴのこだわりを捨てた時、宇宙の大きな流れと一つになれます。'],
+['すべては自分次第','人生の主導権を自分に取り戻した時、自己肯定感も波動も上がります。'],
+// Cat 2: 運とエネルギー (21-29F)
+['ご機嫌でいることが最も費用対効果の高い投資','心（1000）×行動（1）＝成果（1000）です。'],
+['運動とは運を動かすこと','脳、体、心すべてに効く最強の薬は運動です。'],
+['どん底の時ほどスキップをせよ','動作記憶により脳が「楽しい」と勘違いし、痛みが消えることもあります。'],
+['1円玉は金運の子供','落ちている1円を大切に扱うと、親であるお金に愛されます。'],
+['トイレ掃除は臨時収入を呼び込む','神様は綺麗な場所が好き。特に水回りを整えると経済が巡ります。'],
+['食材に「ありがとう」と言う','食材がやる気を出し、味まで変わります。'],
+['憧れる人の本を枕元に置いて寝る','読まなくても、著者のバイブレーションが寝ている間に伝わります。'],
+['宇宙は「命令」するポーズで動く','ヒーローポーズをしながら宇宙と対等に命令すると、願いが届きやすくなります。'],
+['お金は感謝のエネルギーの結晶','支払う時は「仲間の福を連れて帰ってきてね」と送り出してください。'],
+['日の出前の96分間が黄金時間','この時間に自分を整えると、肉体と精神のバランスが最も取れます。'],
+// Cat 3: 視点を変え現実を書き換える (31-39F)
+['人生という映画の監督になれる','脚本を書き換え、上映するフィルムを選ぶ権利はあなたにあります。'],
+['過去の「せいで」を「おかげで」に変える','トラウマを「伏線」と定義した瞬間、パラレルワールドが切り替わります。'],
+['最悪は0.1秒で最高に変えられる','物事の捉え方一つで、今いる場所が天国に変わります。'],
+['偶然だと被害者になり、必然だと主人公になる','起きたことに意味を見出す力が人生を拓きます。'],
+['逆風は空高く舞い上がるチャンス','批判や困難は、あなたをさらなる高みへ運ぶための追い風です。'],
+['当たり前の反対は「ありがたい」','当たり前の枠を外すと、感謝の源泉掛け流し状態になります。'],
+['悩みとは出口のない迷路を上から俯瞰していない状態','視座を上げれば出口はすぐに見つかります。'],
+['四苦八苦を認めれば楽になる','108の煩悩を払う鐘は、実は2つしかありません。'],
+['お守りは物体ではなく心にある','形に囚われず、自分の内なる神を信じれば祟りも消えます。'],
+['三編みを起動せよ','背中から立ち上がる意識の三編みが、理想の未来を照らし出します。'],
+// Cat 4: 豊かな人間関係と愛 (41-49F)
+['みんな味方、みんな仲間','この感覚で生きると、驚くようなシンクロニシティが連発します。'],
+['嫌いな人が50%いるのは正常','宇宙は陰陽50%ずつで均衡しており、批判者は成長のバロメーターです。'],
+['大切な5人だけに集中する','会ったこともない人のアンチコメントより、身近な大切な人を守ってください。'],
+['誰かを喜ばせた思い出はあの世に持っていける','他者への貢献は一生の宝物です。'],
+['愛とは見返りを求めない純粋な与える気持ち','自分から愛を出せば、高速の二乗で増幅して返ってきます。'],
+['誰一人として同じライフリストを持つ人はいない','あなたのやりたいこと全部が、あなたらしく生きる道です。'],
+['人との出会いは奇跡','好きだと思える人に出会えたこと自体が、人生における神様との出会いです。'],
+['徳を積むとは誰も見ていないところで良いことをすること','ご先祖様は必ず見ていて、応援してくれます。'],
+['時給を超えた価値を提供せよ','ボランティアなどで全力を出す経験が、自己イメージを劇的に変えます。'],
+['お母さんがニコニコしていることが最高の教育','教育やしつけより、親の幸せな姿が子供を救います。'],
+// Cat 5: 日常を神聖化する (51-59F)
+['日常をゆっくり丁寧に過ごす','心を込めればエネルギーの循環が良くなります。'],
+['丁寧にやれば雑用さえ人生','一瞬一瞬への態度が運命を決めます。'],
+['ドライヤーの風を「聖なる風」と感じる','無条件に今を味わえば、鬱さえ良くなることがあります。'],
+['台所を「神殿」にする','食材を扱う場所を整えることで、心と体に清らかなエネルギーが宿ります。'],
+['食事は自分への未来の約束','食べることは、自然界の膨大な愛を自分の命に変える儀式です。'],
+['お米には88の神様が宿っている','日本人の幸せの原点は、お米の甘みを味わうことにあります。'],
+['お酒を飲む時は愚痴るな','お酒は感情を転写しやすい。夢や希望を語りながら飲んでください。'],
+['足元こそが究極のパワースポット','自分を支える大地と肉体に感謝すれば、どこへ行く必要もありません。'],
+['息とは「自らの心」','ゆっくり呼吸を見守るだけで、自律神経が整い、能力が引き出されます。'],
+['只今の本当の意味','過去や未来から「今ここ」に戻ってきた、目覚めの挨拶です。'],
+// Cat 6: 逆境を乗り越え奇跡を起こす (61-69F)
+['「ありがとう」を2万5000回言う','心を込めなくていい。数さえ言えば、感謝せずにはいられない奇跡が起きます。'],
+['乗り越えられないことは絶対に起きない','困難が来るのは、あなたがそれを選び、期待されている証拠です。'],
+['ピンチはチャンスの扉','火事で全てを失っても、それをネタにする強さが大逆転を生みます。'],
+['失敗から立ち上がる回復力こそ最強の運','幸運の量と不運の量は比例します。立ち上がるたびに運が強くなります。'],
+['毎日が日曜日','義務感で生きるのをやめ、毎日を思い出作りの日曜日だと定義してください。'],
+['自分を褒めろ','鏡を見て自分を褒め続けると、3ヶ月でトゲが落ち、人生が見違えるように変わります。'],
+['無理をしない、適当にやる','完璧主義を捨て、5分でも10分でも続けることが、10年後の大きな成果を生みます。'],
+['死ぬ時に後悔するのはやらなかったこと','面白そうなことは全部やってみましょう。'],
+['宇宙はあなたを絶対に潰さない','すべては絶妙なタイミングで起きており、あなたは守られています。'],
+['どん底は最高の伏線','今の苦しみは、未来のあなたが語る「伝説の物語」の序章に過ぎません。'],
+// Cat 7: お金と仕事に困らなくなる (71-79F)
+['お金は「ありがとう」の結晶','より多くの「ありがとう」を集める方法を考えれば、収入は自然に増えます。'],
+['お寿司を100円で食べられる奇跡','裏側で支える何百人の手を想像すれば、感謝が溢れ、金運が巡ります。'],
+['ガラガラの店に入る','喜ばれるお金の使い方が、巡り巡って大きな豊かさを呼び込みます。'],
+['贅沢・ギャンブル・溜め込みを控える','お金は水と同じ。流すことで腐らず、あなたの元へ帰ってきます。'],
+['仕事とは頼まれごとを淡々とこなすこと','目の前の頼まれごとに誠実に応えれば、人生は必ず開けます。'],
+['金運を上げても使わなければ腐る','金運というエネルギーを、行動とリスクという形で使い切ってください。'],
+['神社で「最高納税をします」と誓う','世の中の命を救うためにお金を稼ぐと、限界がなくなります。'],
+['他人の悩みは放っておきなさい','自分が太陽のように明るくいることが周囲を救います。'],
+['営業とは相手の笑顔と元気を作ること','目の前の人の扉を開くことに集中すれば、結果は後からついてきます。'],
+['見返りを求めない方がもっとすごいものが来る','宇宙の貯金通帳には、あなたの徳が確実に貯まっています。'],
+// Cat 8: 本質的成功と智慧 (81-89F)
+['人知れずゴミを拾う（陰徳）','誰にも見られていなくても、ご先祖様と神様は必ず見ています。'],
+['死んでから本当の親孝行が始まる','亡くなった親を喜ばせるような生き方をすることが、真の親孝行です。'],
+['一芸に秀でれば仏の世界の住人になれる','今ワクワクすることに没頭するだけで、あなたは専門家になれます。'],
+['心臓を動かしているのは自分ではない','先祖からの祈りが、今もあなたの心臓を動かし続けています。'],
+['体温は36.5度で一定','外の環境が変わっても、内側の情熱を保ち続ければ運勢に左右されません。'],
+['360年後の地球は感謝に溢れている','未来は明るい。その未来の生き方を今から始めてください。'],
+['自分の内部を探索すれば宇宙のすべての智慧がある','外に答えを求めず、自分の内なる宇宙を信頼してください。'],
+['あなたはスーパー地球人','封印された未知の能力を、思い出すだけでいいのです。'],
+['宇宙即我','あなたが動けば宇宙が動き、宇宙が動けばあなたが動きます。'],
+['毎日がプレゼント','今朝目覚めたことは、昨日亡くなった人がどうしても生きたかった「今日」です。'],
+// Cat 9: 未来を切り拓く魔法の言葉 (91-98F)
+['傷こそあなただけのものになった証','失敗も傷も、あなたという人間を輝かせるアートの一部です。'],
+['10年寿命を延ばす言葉は「まだ……歳」','若々しさは意識の捉え方から生まれます。'],
+['鈍感力こそ健康と幸せの秘訣','細かいことに目くじらを立てず、ぼーっとしている方が柱は立ちます。'],
+['怒らないのは自分の毛細血管を守るため','腹を立てるたびに脳の血管は切れています。自分のために穏やかでいてください。'],
+['笑えたらおしまい（解決）','どんな深刻なことも、笑いに変えた瞬間に祟りも悩みも消え去ります。'],
+['根性ではなくご褒美が足りない','続けられないのは意志が弱いからではなく、ワクワクが足りないだけです。'],
+['愛していると言いなさい','脳は自分の発した言葉を「言われた言葉」として認識し、勇気が湧いてきます。'],
+['全ては宇宙にお任せ','力を抜き、パーの手で流れに身を任せれば、最高の場所に運ばれます。'],
+['あなたの代わりはいない','あなたがいるからこそ、この世界は優しい世界になります。'],
+['人生は思い出作りにやってきた','最後の日、自分の命に「楽しかったね」と言える生き方をしましょう。'],
+];
+
+// ════════════════════════════════════════
+//  EQUIPMENT / TIER DATA
+// ════════════════════════════════════════
+const MAX_LV=99;
+const TIER_NAMES=['旅人','見習い冒険者','冒険者','勇者見習い','勇者','魔法剣士','賢者','聖騎士','伝説の勇者','感謝の勇者王'];
 const TIER_STORIES=[
   '感謝の旅が始まったばかり。装備も心もまだ貧弱だ。',
   '銅の剣を手に入れた。見習いとして認められた証だ。',
@@ -576,98 +759,25 @@ const TIER_STORIES=[
   '伝説に刻まれた勇者よ。全ての感謝がここに結集した。',
   '感謝の頂点に立つ勇者王。その力は宇宙を超える！✨',
 ];
+const AREA_NAMES=['草原の入口','暗い森','洞窟','地下水脈','炎の回廊','氷の回廊','天空の道','闇の神殿','魔王の間','最終試練'];
 
-// ── 装備データ (ティア0〜9) ──
 const EQUIP_TIERS=[
-  // Tier 0: Lv 1-9 旅人
-  {
-    weapon:{name:'木の棒',       icon:'🪵',r:'common',   stat:'ATK+3',   desc:'旅立ちの一本。なにもないよりはマシ'},
-    armor: {name:'布の服',       icon:'👘',r:'common',   stat:'DEF+2',   desc:'普通の服。防御はほぼゼロだが…'},
-    shield:{name:'なし',         icon:'🫤',r:'common',   stat:'—',       desc:'まだ盾は持っていない'},
-    magic: {name:'なし',         icon:'—', r:'common',   stat:'—',       desc:'魔法はまだ修得していない'},
-  },
-  // Tier 1: Lv 10-19 見習い冒険者
-  {
-    weapon:{name:'銅の剣',       icon:'🗡️',r:'common',   stat:'ATK+20',  desc:'冒険者の第一歩。なまくらだが鈍く光る'},
-    armor: {name:'革の鎧',       icon:'🥋',r:'common',   stat:'DEF+14',  desc:'軽くて動きやすい。革製で防御も少し'},
-    shield:{name:'木の盾',       icon:'🛡️',r:'common',   stat:'DEF+8',   desc:'木を削って作った小さな丸盾'},
-    magic: {name:'ホイミ',       icon:'💚',r:'common',   stat:'HP+30',   desc:'HPを30回復する初級回復魔法'},
-  },
-  // Tier 2: Lv 20-29 冒険者
-  {
-    weapon:{name:'鉄の剣',       icon:'⚔️',r:'uncommon', stat:'ATK+45',  desc:'丈夫な鉄製の剣。これで一人前だ'},
-    armor: {name:'くさりかたびら',icon:'⛓️',r:'uncommon', stat:'DEF+28',  desc:'金属の鎖を編んだ中級の鎧'},
-    shield:{name:'革の盾',       icon:'🛡️',r:'uncommon', stat:'DEF+18',  desc:'革で補強された頼りになる盾'},
-    magic: {name:'メラ',         icon:'🔥',r:'uncommon', stat:'炎ATK+35',desc:'小さな炎を放つ初級攻撃魔法'},
-  },
-  // Tier 3: Lv 30-39 勇者見習い
-  {
-    weapon:{name:'鋼鉄の剣',     icon:'⚔️',r:'uncommon', stat:'ATK+75',  desc:'よく研ぎ澄まされた鋼の剣。よく切れる'},
-    armor: {name:'青銅の鎧',     icon:'🦺',r:'uncommon', stat:'DEF+45',  desc:'青銅を鍛えた上質な鎧。動きやすい'},
-    shield:{name:'鉄の盾',       icon:'🛡️',r:'uncommon', stat:'DEF+30',  desc:'鉄製の大型盾。重いが頼りになる'},
-    magic: {name:'ギラ',         icon:'⚡',r:'uncommon', stat:'閃光+55', desc:'強烈な閃光を放つ広範囲攻撃魔法'},
-  },
-  // Tier 4: Lv 40-49 勇者
-  {
-    weapon:{name:'炎の剣',       icon:'🔥',r:'rare',     stat:'ATK+110', desc:'炎を纏った真紅の剣。灼熱の一撃'},
-    armor: {name:'鋼鉄の鎧',     icon:'🛡',r:'rare',     stat:'DEF+65',  desc:'鋼鉄を打ち鍛えた重厚な勇者の鎧'},
-    shield:{name:'鋼鉄の盾',     icon:'🛡️',r:'rare',     stat:'DEF+45',  desc:'鋼鉄製の大きな盾。勇者の証'},
-    magic: {name:'メラミ',       icon:'🔥',r:'rare',     stat:'炎ATK+80',desc:'巨大な炎球を放つ中級炎魔法'},
-  },
-  // Tier 5: Lv 50-59 魔法剣士
-  {
-    weapon:{name:'氷の剣',       icon:'❄️',r:'rare',     stat:'ATK+155', desc:'絶対零度を纏う。触れた者を凍らせる'},
-    armor: {name:'魔法の鎧',     icon:'💠',r:'rare',     stat:'DEF+90',  desc:'魔力で強化された特殊合金の鎧'},
-    shield:{name:'炎の盾',       icon:'🔥',r:'rare',     stat:'DEF+62',  desc:'炎の魔力で攻撃を跳ね返す特殊な盾'},
-    magic: {name:'ヒャド',       icon:'❄️',r:'rare',     stat:'氷ATK+110',desc:'凍えるような氷の槍を放つ中級氷魔法'},
-  },
-  // Tier 6: Lv 60-69 賢者
-  {
-    weapon:{name:'雷の剣',       icon:'⚡',r:'epic',     stat:'ATK+210', desc:'天の雷光を宿した賢者の剣。轟音とともに斬る'},
-    armor: {name:'ドラゴンアーマー',icon:'🐉',r:'epic',  stat:'DEF+120', desc:'龍の鱗を用いた最高級の鎧。呪文も防ぐ'},
-    shield:{name:'魔法の盾',     icon:'💫',r:'epic',     stat:'DEF+84',  desc:'魔力の壁を張り攻撃を無効化する神秘の盾'},
-    magic: {name:'ベギラマ',     icon:'✨',r:'epic',     stat:'閃光+150',desc:'強烈な閃光を放つ上級広範囲魔法'},
-  },
-  // Tier 7: Lv 70-79 聖騎士
-  {
-    weapon:{name:'聖なる剣',     icon:'✝️',r:'epic',     stat:'ATK+270', desc:'聖光に満ちた純白の剣。邪悪を断ち斬る'},
-    armor: {name:'聖なる鎧',     icon:'✨',r:'epic',     stat:'DEF+155', desc:'聖なる力に守られた神聖な鎧。全状態異常無効'},
-    shield:{name:'聖なる盾',     icon:'🌟',r:'epic',     stat:'DEF+108', desc:'聖光で包まれた完璧な防御の盾'},
-    magic: {name:'メラゾーマ',   icon:'🌋',r:'epic',     stat:'炎ATK+200',desc:'灼熱の大炎を放つ上級炎魔法。敵を燃やし尽くす'},
-  },
-  // Tier 8: Lv 80-89 伝説の勇者
-  {
-    weapon:{name:'勇者の剣',     icon:'💎',r:'legend',   stat:'ATK+350', desc:'選ばれし者だけが手にできる究極の剣'},
-    armor: {name:'伝説の鎧',     icon:'💎',r:'legend',   stat:'DEF+200', desc:'伝説に語り継がれる不壊の鎧。全属性耐性'},
-    shield:{name:'勇者の盾',     icon:'💎',r:'legend',   stat:'DEF+145', desc:'全ての攻撃を半減する伝説の盾'},
-    magic: {name:'ギガデイン',   icon:'⚡',r:'legend',   stat:'雷ATK+280',desc:'天より雷を呼び降ろす最強の雷魔法'},
-  },
-  // Tier 9: Lv 90-99 感謝の勇者王
-  {
-    weapon:{name:'伝説の剣 ✨',  icon:'⚡',r:'legend',   stat:'ATK+450', desc:'宇宙の感謝エネルギーが凝縮された最強の剣'},
-    armor: {name:'神聖なる鎧 ✨',icon:'🌟',r:'legend',   stat:'DEF+280', desc:'神々が授けた絶対不壊の神聖な鎧。無敵'},
-    shield:{name:'神の盾 ✨',    icon:'🌟',r:'legend',   stat:'DEF+200', desc:'全ての攻撃・魔法を完全無効化する神の盾'},
-    magic: {name:'グランドクロス',icon:'🌈',r:'legend',  stat:'全属性+400',desc:'感謝の力で世界を包む最強最後の奥義'},
-  },
+  {weapon:{name:'木の棒',icon:'🪵',r:'common',stat:'ATK+3'},armor:{name:'布の服',icon:'👘',r:'common',stat:'DEF+2'},shield:{name:'なし',icon:'🫤',r:'common',stat:'—'},magic:{name:'なし',icon:'—',r:'common',stat:'—'}},
+  {weapon:{name:'銅の剣',icon:'🗡️',r:'common',stat:'ATK+20'},armor:{name:'革の鎧',icon:'🥋',r:'common',stat:'DEF+14'},shield:{name:'木の盾',icon:'🛡️',r:'common',stat:'DEF+8'},magic:{name:'ホイミ',icon:'💚',r:'common',stat:'HP+30'}},
+  {weapon:{name:'鉄の剣',icon:'⚔️',r:'uncommon',stat:'ATK+45'},armor:{name:'くさりかたびら',icon:'⛓️',r:'uncommon',stat:'DEF+28'},shield:{name:'革の盾',icon:'🛡️',r:'uncommon',stat:'DEF+18'},magic:{name:'メラ',icon:'🔥',r:'uncommon',stat:'炎+35'}},
+  {weapon:{name:'鋼鉄の剣',icon:'⚔️',r:'uncommon',stat:'ATK+75'},armor:{name:'青銅の鎧',icon:'🦺',r:'uncommon',stat:'DEF+45'},shield:{name:'鉄の盾',icon:'🛡️',r:'uncommon',stat:'DEF+30'},magic:{name:'ギラ',icon:'⚡',r:'uncommon',stat:'閃光+55'}},
+  {weapon:{name:'炎の剣',icon:'🔥',r:'rare',stat:'ATK+110'},armor:{name:'鋼鉄の鎧',icon:'🛡',r:'rare',stat:'DEF+65'},shield:{name:'鋼鉄の盾',icon:'🛡️',r:'rare',stat:'DEF+45'},magic:{name:'メラミ',icon:'🔥',r:'rare',stat:'炎+80'}},
+  {weapon:{name:'氷の剣',icon:'❄️',r:'rare',stat:'ATK+155'},armor:{name:'魔法の鎧',icon:'💠',r:'rare',stat:'DEF+90'},shield:{name:'炎の盾',icon:'🔥',r:'rare',stat:'DEF+62'},magic:{name:'ヒャド',icon:'❄️',r:'rare',stat:'氷+110'}},
+  {weapon:{name:'雷の剣',icon:'⚡',r:'epic',stat:'ATK+210'},armor:{name:'ドラゴンアーマー',icon:'🐉',r:'epic',stat:'DEF+120'},shield:{name:'魔法の盾',icon:'💫',r:'epic',stat:'DEF+84'},magic:{name:'ベギラマ',icon:'✨',r:'epic',stat:'閃光+150'}},
+  {weapon:{name:'聖なる剣',icon:'✝️',r:'epic',stat:'ATK+270'},armor:{name:'聖なる鎧',icon:'✨',r:'epic',stat:'DEF+155'},shield:{name:'聖なる盾',icon:'🌟',r:'epic',stat:'DEF+108'},magic:{name:'メラゾーマ',icon:'🌋',r:'epic',stat:'炎+200'}},
+  {weapon:{name:'勇者の剣',icon:'💎',r:'legend',stat:'ATK+350'},armor:{name:'伝説の鎧',icon:'💎',r:'legend',stat:'DEF+200'},shield:{name:'勇者の盾',icon:'💎',r:'legend',stat:'DEF+145'},magic:{name:'ギガデイン',icon:'⚡',r:'legend',stat:'雷+280'}},
+  {weapon:{name:'伝説の剣 ✨',icon:'⚡',r:'legend',stat:'ATK+450'},armor:{name:'神聖なる鎧 ✨',icon:'🌟',r:'legend',stat:'DEF+280'},shield:{name:'神の盾 ✨',icon:'🌟',r:'legend',stat:'DEF+200'},magic:{name:'グランドクロス',icon:'🌈',r:'legend',stat:'全+400'}},
 ];
 
-// ── ピクセルアート テーマ (ティア別 10種) ──
-// 色キー: h=ヘルメット/髪, s=肌, e=目, m=口, a=鎧, g=鎧ハイライト, l=脚, b=ブーツ, d=盾, v=剣
-const LEVEL_THEMES=[
-  {h:'#8B7355',s:'#FDBCB4',e:'#3C2418',m:'#C06068',a:'#9E9E9E',g:'#BDBDBD',l:'#795548',b:'#4E342E',d:'#BCAAA4',v:'#ADADAD'}, // 0 灰/旅人
-  {h:'#795548',s:'#FDBCB4',e:'#3C2418',m:'#C06068',a:'#A0522D',g:'#CD853F',l:'#5D4037',b:'#3E2723',d:'#A1887F',v:'#D4AC8A'}, // 1 革/見習い
-  {h:'#607D8B',s:'#FDBCB4',e:'#3C2418',m:'#C06068',a:'#607D8B',g:'#90A4AE',l:'#455A64',b:'#263238',d:'#78909C',v:'#B0BEC5'}, // 2 鎖/冒険者
-  {h:'#795548',s:'#FDBCB4',e:'#3C2418',m:'#C06068',a:'#8C6239',g:'#CD8B3A',l:'#5D4037',b:'#3E2723',d:'#B08D57',v:'#D4A843'}, // 3 青銅/勇者見習い
-  {h:'#4A3728',s:'#FDBCB4',e:'#3C2418',m:'#C06068',a:'#1565C0',g:'#42A5F5',l:'#0D47A1',b:'#0A2F6E',d:'#64B5F6',v:'#E3F2FD'}, // 4 青/勇者
-  {h:'#546E7A',s:'#FDBCB4',e:'#3C2418',m:'#C06068',a:'#0288D1',g:'#81D4FA',l:'#01579B',b:'#003A6B',d:'#B3E5FC',v:'#E1F5FE'}, // 5 氷青/魔法剣士
-  {h:'#33691E',s:'#FDBCB4',e:'#3C2418',m:'#C06068',a:'#2E7D32',g:'#66BB6A',l:'#1B5E20',b:'#0D3E12',d:'#A5D6A7',v:'#F1F8E9'}, // 6 緑/賢者
-  {h:'#F9A825',s:'#FDBCB4',e:'#3C2418',m:'#C06068',a:'#ECEFF1',g:'#FFFFFF',l:'#B0BEC5',b:'#78909C',d:'#FFD700',v:'#FFE57F'}, // 7 白金/聖騎士
-  {h:'#FFD700',s:'#FDBCB4',e:'#3C2418',m:'#C06068',a:'#7B1FA2',g:'#CE93D8',l:'#4A148C',b:'#2E0654',d:'#FFD700',v:'#FFE57F'}, // 8 紫金/伝説
-  {h:'#FFD700',s:'#FDBCB4',e:'#3C2418',m:'#C06068',a:'#B71C1C',g:'#FF7043',l:'#7F0000',b:'#4A0000',d:'#FFD700',v:'#FFD700'}, // 9 緋金/勇者王
-];
-
-// ── ピクセルマップ 16×20 ──
-const PIXEL_MAP=[
+// ════════════════════════════════════════
+//  HERO PIXEL ART
+// ════════════════════════════════════════
+const HERO_MAP=[
   [0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0],
   [0,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0],
   [0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0],
@@ -689,98 +799,461 @@ const PIXEL_MAP=[
   [0,0,0,8,8,8,0,0,0,8,8,8,0,0,0,0],
   [0,0,0,8,8,8,0,0,0,8,8,8,0,0,0,0],
 ];
+const LV_THEMES=[
+  {h:'#8B7355',s:'#FDBCB4',e:'#3C2418',m:'#C06068',a:'#9E9E9E',g:'#BDBDBD',l:'#795548',b:'#4E342E',d:'#BCAAA4',v:'#ADADAD'},
+  {h:'#795548',s:'#FDBCB4',e:'#3C2418',m:'#C06068',a:'#A0522D',g:'#CD853F',l:'#5D4037',b:'#3E2723',d:'#A1887F',v:'#D4AC8A'},
+  {h:'#607D8B',s:'#FDBCB4',e:'#3C2418',m:'#C06068',a:'#607D8B',g:'#90A4AE',l:'#455A64',b:'#263238',d:'#78909C',v:'#B0BEC5'},
+  {h:'#795548',s:'#FDBCB4',e:'#3C2418',m:'#C06068',a:'#8C6239',g:'#CD8B3A',l:'#5D4037',b:'#3E2723',d:'#B08D57',v:'#D4A843'},
+  {h:'#4A3728',s:'#FDBCB4',e:'#3C2418',m:'#C06068',a:'#1565C0',g:'#42A5F5',l:'#0D47A1',b:'#0A2F6E',d:'#64B5F6',v:'#E3F2FD'},
+  {h:'#546E7A',s:'#FDBCB4',e:'#3C2418',m:'#C06068',a:'#0288D1',g:'#81D4FA',l:'#01579B',b:'#003A6B',d:'#B3E5FC',v:'#E1F5FE'},
+  {h:'#33691E',s:'#FDBCB4',e:'#3C2418',m:'#C06068',a:'#2E7D32',g:'#66BB6A',l:'#1B5E20',b:'#0D3E12',d:'#A5D6A7',v:'#F1F8E9'},
+  {h:'#F9A825',s:'#FDBCB4',e:'#3C2418',m:'#C06068',a:'#ECEFF1',g:'#FFFFFF',l:'#B0BEC5',b:'#78909C',d:'#FFD700',v:'#FFE57F'},
+  {h:'#FFD700',s:'#FDBCB4',e:'#3C2418',m:'#C06068',a:'#7B1FA2',g:'#CE93D8',l:'#4A148C',b:'#2E0654',d:'#FFD700',v:'#FFE57F'},
+  {h:'#FFD700',s:'#FDBCB4',e:'#3C2418',m:'#C06068',a:'#B71C1C',g:'#FF7043',l:'#7F0000',b:'#4A0000',d:'#FFD700',v:'#FFD700'},
+];
 
-function buildHeroSVG(tier){
-  const P=9, theme=LEVEL_THEMES[Math.min(tier,9)];
-  const C=[null,theme.h,theme.s,theme.e,theme.m,theme.a,theme.g,theme.l,theme.b,theme.d,theme.v];
-  let r='';
-  PIXEL_MAP.forEach((row,y)=>row.forEach((c,x)=>{ if(!c)return; r+=`<rect x="${x*P}" y="${y*P}" width="${P}" height="${P}" fill="${C[c]}"/>`; }));
-  return `<svg width="${16*P}" height="${20*P}" viewBox="0 0 ${16*P} ${20*P}" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated">${r}</svg>`;
+function buildHeroSVG(tier,px){
+  px=px||7;const t=LV_THEMES[Math.min(tier,9)];
+  const C=[null,t.h,t.s,t.e,t.m,t.a,t.g,t.l,t.b,t.d,t.v];
+  let r='';HERO_MAP.forEach((row,y)=>row.forEach((c,x)=>{if(!c)return;r+=`<rect x="${x*px}" y="${y*px}" width="${px}" height="${px}" fill="${C[c]}"/>`;}));
+  return`<svg width="${16*px}" height="${20*px}" viewBox="0 0 ${16*px} ${20*px}" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated">${r}</svg>`;
 }
 
-// ── renderQuest ──
-const RARITY_LABEL={common:'ノーマル',uncommon:'アンコモン',rare:'レア',epic:'エピック',legend:'レジェンド'};
+// ════════════════════════════════════════
+//  CORE FUNCTIONS
+// ════════════════════════════════════════
+const todayStr=()=>new Date().toISOString().slice(0,10);
+const fmtDate=s=>{const d=new Date(s+'T00:00:00');return`${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日`;};
+const fmtTime=ts=>{const d=new Date(ts);return`${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;};
+const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
 
-function renderQuest(){
-  const lv=getLevel(), tier=getTier(lv);
-  const stats=getLvStats(lv), maxS=getLvStats(MAX_LV), prog=getLvProgress(lv);
-  const equip=EQUIP_TIERS[tier];
+function reqEntries(lv){if(lv<=1)return 0;return Math.floor(Math.pow(lv-1,2)*0.15+(lv-1)*1.5);}
+function getLevel(){const n=D.entries.length;for(let lv=MAX_LV;lv>=2;lv--){if(n>=reqEntries(lv))return lv;}return 1;}
+function getTier(lv){if(lv>=90)return 9;return Math.floor((lv-1)/10);}
+function getLvStats(lv){return{hp:20+(lv-1)*8,atk:5+(lv-1)*3,def:3+(lv-1)*2,mag:lv>=10?(lv-9)*2:0};}
+function getLvProgress(lv){if(lv>=MAX_LV)return{pct:100,remaining:0};const curr=reqEntries(lv),next=reqEntries(lv+1),n=D.entries.length;return{pct:Math.min(100,((n-curr)/(next-curr)*100)).toFixed(0),remaining:next-n};}
+function getFloor(){return Math.min(99,getLevel()+D.masterBonus);}
+function getAreaIndex(floor){if(floor>=91)return 9;if(floor>=81)return 8;return Math.floor((floor-1)/10);}
 
-  document.getElementById('heroSprite').innerHTML=buildHeroSVG(tier);
-  document.getElementById('questLvBadge').textContent=`Lv.${lv}`;
-  document.getElementById('questLvName').textContent=TIER_NAMES[tier];
-  document.getElementById('questLvStory').textContent=TIER_STORIES[tier];
+function toast(msg,color='rgba(255,215,0,.9)'){
+  const t=document.getElementById('toast');t.textContent=msg;t.style.background=color;t.style.color=color.includes('215')?'#1a1a2e':'#fff';
+  t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);
+}
+function burst(emojis=['⚔️','✨','💫','🌟','🎉'],n=8){
+  for(let i=0;i<n;i++)setTimeout(()=>{const p=document.createElement('div');p.className='particle';p.textContent=emojis[Math.floor(Math.random()*emojis.length)];p.style.left=Math.random()*92+'vw';p.style.top='-20px';document.body.appendChild(p);setTimeout(()=>p.remove(),1700);},i*100);
+}
 
-  document.getElementById('qHpBar').style.width =(stats.hp /maxS.hp *100)+'%';
-  document.getElementById('qAtkBar').style.width=(stats.atk/maxS.atk*100)+'%';
-  document.getElementById('qDefBar').style.width=(stats.def/maxS.def*100)+'%';
-  document.getElementById('qMagBar').style.width=(maxS.mag>0?Math.max(0,stats.mag/maxS.mag*100):0)+'%';
-  document.getElementById('qHpVal').textContent =stats.hp;
-  document.getElementById('qAtkVal').textContent=stats.atk;
-  document.getElementById('qDefVal').textContent=stats.def;
-  document.getElementById('qMagVal').textContent=stats.mag>0?stats.mag:'—';
+// ════════════════════════════════════════
+//  COUNTER
+// ════════════════════════════════════════
+function tap(){
+  const t=todayStr();if(D.tapDate!==t){D.tapToday=0;D.tapDate=t;}
+  D.tapToday++;D.tapTotal++;D.gold++;save();renderCounter();
+  const btn=document.getElementById('cBtn');btn.style.transform='scale(.86)';setTimeout(()=>btn.style.transform='',140);
+  if([1,10,50,100,500,1000].includes(D.tapTotal)){burst(['🙏','💛','✨']);toast(`🎉 累計${D.tapTotal}回のありがとう！`);}
+}
+function renderCounter(){
+  document.getElementById('cToday').textContent=D.tapDate===todayStr()?D.tapToday:0;
+  document.getElementById('cTotal').textContent=D.tapTotal;
+}
 
-  if(lv<MAX_LV){
-    document.getElementById('questProgLabel').textContent=`次のLv.${lv+1}まで`;
-    document.getElementById('questProgCount').textContent=`あと${prog.remaining}件`;
-    document.getElementById('questProgBar').style.width=prog.pct+'%';
+// ════════════════════════════════════════
+//  FORM
+// ════════════════════════════════════════
+let selCat='',selMood=0;
+function pickCat(btn,cat){document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');selCat=cat;}
+function pickMood(btn,m){document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');selMood=m;}
+
+function calcStreak(){
+  const t=todayStr();if(D.lastDate===t)return;
+  const prev=new Date();prev.setDate(prev.getDate()-1);
+  D.streak=D.lastDate===prev.toISOString().slice(0,10)?D.streak+1:1;
+  D.best=Math.max(D.best,D.streak);D.lastDate=t;
+}
+function delEntry(id){D.entries=D.entries.filter(e=>e.id!==id);save();renderTodayList();updateHeader();}
+
+// ════════════════════════════════════════
+//  SAVE ENTRY → TRIGGER BATTLE
+// ════════════════════════════════════════
+function saveEntry(){
+  const text=document.getElementById('eText').value.trim();
+  if(!text){toast('💭 感謝の内容を入力してください','rgba(255,107,157,.9)');return;}
+
+  const prevLv=getLevel();
+  D.entries.unshift({id:Date.now().toString(),date:todayStr(),text,category:selCat||'✨ その他',mood:selMood||3,ts:Date.now()});
+  calcStreak();save();
+
+  document.getElementById('eText').value='';selCat='';selMood=0;
+  document.querySelectorAll('.cat-btn,.mood-btn').forEach(b=>b.classList.remove('sel'));
+
+  const newLv=getLevel();
+  const floor=getFloor();
+
+  // Determine battle type
+  const boss=BOSSES.find(b=>b.floor===floor&&!D.bossDefeated.includes(b.floor));
+  if(boss){
+    startBattle(boss,true,prevLv,newLv);
   } else {
-    document.getElementById('questProgLabel').textContent='🎉 Lv.99 最高位到達！';
-    document.getElementById('questProgCount').textContent=`${D.entries.length}件`;
-    document.getElementById('questProgBar').style.width='100%';
+    const candidates=MONS.filter(m=>floor>=m[8]&&floor<=m[9]);
+    const mon=candidates.length?candidates[Math.floor(Math.random()*candidates.length)]:MONS[0];
+    startBattle(mon,false,prevLv,newLv);
+  }
+}
+
+// ════════════════════════════════════════
+//  BATTLE SYSTEM
+// ════════════════════════════════════════
+let battleSkipped=false;
+let battleResolve=null;
+
+function getMonsterObj(data,isBoss){
+  if(isBoss)return{name:data.name,sub:data.sub,shape:data.shape,colors:data.colors,hp:data.hp,atk:data.atk,def:data.def,exp:data.exp,gold:data.gold,isBoss:true,bossData:data};
+  return{name:data[0],shape:data[1],colors:data[2],hp:data[3],atk:data[4],def:data[5],exp:data[6],gold:data[7],isBoss:false};
+}
+
+function generateTurns(monster){
+  const turns=[];
+  const numHits=2+Math.floor(Math.random()*3);
+  let hpLeft=monster.hp;
+  for(let i=0;i<numHits;i++){
+    const isLast=(i===numHits-1)||(hpLeft<=monster.hp/numHits);
+    const crit=!isLast&&Math.random()<0.06;
+    let dmg;
+    if(i===numHits-1){dmg=hpLeft;}
+    else{dmg=Math.max(1,Math.floor(monster.hp/numHits*(0.8+Math.random()*0.4)));if(crit)dmg=Math.floor(dmg*1.5);}
+    hpLeft-=dmg;if(hpLeft<0)dmg+=hpLeft;
+    turns.push({actor:'hero',type:crit?'crit':'hit',dmg:Math.max(1,dmg)});
+    if(hpLeft<=0)break;
+    const miss=Math.random()<0.25;
+    if(miss){turns.push({actor:'mon',type:'miss',dmg:0});}
+    else{turns.push({actor:'mon',type:'hit',dmg:Math.max(1,Math.floor(monster.atk*(0.5+Math.random()*0.6)))});}
+  }
+  return turns;
+}
+
+async function startBattle(data,isBoss,prevLv,newLv){
+  battleSkipped=false;
+  const monster=getMonsterObj(data,isBoss);
+  const overlay=document.getElementById('battleOverlay');
+  const msgWin=document.getElementById('bMsgWindow');
+  const monSprite=document.getElementById('bMonSprite');
+  const hpFill=document.getElementById('bMonHpFill');
+
+  // Setup
+  const px=isBoss?12:8;
+  document.getElementById('bMonName').textContent=isBoss?`${monster.name}（${monster.sub}）`:monster.name;
+  monSprite.innerHTML=buildMonSVG(monster.shape,monster.colors,px);
+  hpFill.style.width='100%';
+  document.getElementById('bMonHpLabel').textContent=`HP ${monster.hp}/${monster.hp}`;
+  msgWin.innerHTML='';
+  overlay.classList.add('open');
+
+  const addMsg=async(text)=>{
+    if(battleSkipped)return;
+    const p=document.createElement('p');p.textContent='';msgWin.appendChild(p);
+    msgWin.scrollTop=msgWin.scrollHeight;
+    for(const ch of text){if(battleSkipped){p.textContent=text;return;}p.textContent+=ch;await wait(30);}
+    await wait(300);
+  };
+
+  // Appear
+  await addMsg(`${monster.name}が あらわれた！`);
+
+  // Battle turns
+  const turns=generateTurns(monster);
+  let hpLeft=monster.hp;
+  for(const turn of turns){
+    if(battleSkipped)break;
+    if(turn.actor==='hero'){
+      if(turn.type==='crit'){
+        await addMsg(`かいしんの いちげき！ ${turn.dmg}のダメージ！`);
+      }else{
+        await addMsg(`ゆうしゃ のこうげき！ ${turn.dmg}のダメージ！`);
+      }
+      hpLeft=Math.max(0,hpLeft-turn.dmg);
+      hpFill.style.width=(hpLeft/monster.hp*100)+'%';
+      document.getElementById('bMonHpLabel').textContent=`HP ${hpLeft}/${monster.hp}`;
+      if(!battleSkipped){monSprite.classList.add('monster-flash');await wait(400);monSprite.classList.remove('monster-flash');}
+    }else{
+      if(turn.type==='miss'){await addMsg(`${monster.name} のこうげき！ ミス！`);}
+      else{await addMsg(`${monster.name} のこうげき！ ${turn.dmg}のダメージ！`);}
+    }
   }
 
+  // Victory
+  hpFill.style.width='0%';
+  await addMsg(`${monster.name} をたおした！`);
+  await addMsg(`${monster.exp}の けいけんちを かくとく！`);
+  await addMsg(`${monster.gold}ゴールド てにいれた！`);
+
+  // Record
+  D.gold+=monster.gold;
+  if(!D.monstersDefeated[monster.name])D.monstersDefeated[monster.name]=0;
+  D.monstersDefeated[monster.name]++;
+
+  // Level up
+  if(newLv>prevLv){
+    await addMsg(`🎉 レベルが ${newLv} にあがった！`);
+    const newTier=getTier(newLv),prevTier=getTier(prevLv);
+    if(newTier>prevTier){
+      await addMsg(`🎊 ${TIER_NAMES[newTier]} にクラスチェンジ！`);
+    }
+  }
+
+  // Boss drop
+  if(isBoss){
+    D.bossDefeated.push(monster.bossData.floor);
+    D.happyEquips.push(monster.bossData.drop);
+    await addMsg(`✨ 『${monster.bossData.drop}』を てにいれた！`);
+    burst(['👑','✨','💎','🌟','⚔️'],14);
+  }
+
+  save();
+  await wait(battleSkipped?200:800);
+
+  // Close battle
+  overlay.classList.remove('open');
+
+  // Master check
+  const floor=getFloor();
+  const cat=getAreaIndex(floor);
+  const catQuotes=[];
+  for(let i=cat*10;i<cat*10+10&&i<MW.length;i++){if(!D.masterSeen.includes(i))catQuotes.push(i);}
+  // 35% chance or always after boss
+  if(catQuotes.length&&(isBoss||Math.random()<0.35)){
+    const qi=catQuotes[Math.floor(Math.random()*catQuotes.length)];
+    D.masterSeen.push(qi);
+    D.masterBonus++;
+    save();
+    showMaster(qi);
+  }
+
+  renderAll();
+  if(!isBoss)burst(['⚔️','✨','💫'],6);
+}
+
+function skipBattle(){battleSkipped=true;}
+
+function showMaster(qi){
+  const q=MW[qi];
+  document.getElementById('masterQuoteText').textContent=`「${q[0]}」`;
+  document.getElementById('masterDetailText').textContent=q[1];
+  document.getElementById('masterExpText').textContent='💫 冒険が1階分進んだ！';
+  document.getElementById('masterOverlay').classList.add('open');
+}
+function closeMaster(){
+  document.getElementById('masterOverlay').classList.remove('open');
+  toast('👴 師匠の教えを心に刻んだ！');
+  renderAll();
+}
+
+// ════════════════════════════════════════
+//  RENDER: Header
+// ════════════════════════════════════════
+function updateHeader(){
+  const lv=getLevel(),tier=getTier(lv),floor=getFloor();
+  document.getElementById('hLevel').textContent=`⚔️ Lv.${lv} ${TIER_NAMES[tier]}`;
+  document.getElementById('hFloor').textContent=`🏰 ${floor}F`;
+  document.getElementById('hStreak').textContent=`🔥 ${D.streak}日`;
+  document.getElementById('hTotal').textContent=`🙏 ${D.entries.length}件`;
+}
+
+// ════════════════════════════════════════
+//  RENDER: Today List
+// ════════════════════════════════════════
+const moodE=['','😐','🙂','😊','😄','🥰'];
+function renderTodayList(){
+  const list=D.entries.filter(e=>e.date===todayStr());
+  const el=document.getElementById('todayList');
+  if(!list.length){el.innerHTML=`<div class="empty-state"><div class="empty-icon">⚔️</div><p>まだ今日の記録がありません<br>感謝を記録してモンスターと戦おう！</p></div>`;return;}
+  el.innerHTML=list.map(e=>`<div class="entry-item">
+    <button class="entry-del" onclick="delEntry('${e.id}')">✕</button>
+    <div class="entry-text">${esc(e.text)}</div>
+    <div class="entry-meta"><span class="entry-cat">${e.category}</span><span>${moodE[e.mood]}</span><span class="entry-time">${fmtTime(e.ts)}</span></div>
+  </div>`).join('');
+}
+
+// ════════════════════════════════════════
+//  RENDER: Adventure Tab
+// ════════════════════════════════════════
+const RARITY_LABEL={common:'ノーマル',uncommon:'アンコモン',rare:'レア',epic:'エピック',legend:'レジェンド'};
+
+function renderAdventure(){
+  const lv=getLevel(),tier=getTier(lv),floor=getFloor(),area=getAreaIndex(floor);
+  const stats=getLvStats(lv),maxS=getLvStats(MAX_LV),prog=getLvProgress(lv);
+
+  // Tower
+  document.getElementById('tFloorBig').textContent=`${floor}F`;
+  document.getElementById('tAreaName').textContent=`${AREA_NAMES[area]}`;
+  document.getElementById('tBarFill').style.width=(floor/99*100)+'%';
+  const nextBoss=BOSSES.find(b=>b.floor>=floor&&!D.bossDefeated.includes(b.floor));
+  document.getElementById('tBossNext').textContent=nextBoss?`次のボス: ${nextBoss.floor}F ${nextBoss.name}（${nextBoss.sub}）`:'全ボス討伐完了！👑';
+
+  // Hero
+  document.getElementById('advHeroSprite').innerHTML=buildHeroSVG(tier,6);
+  document.getElementById('advLvBadge').textContent=`Lv.${lv}`;
+  document.getElementById('advTierName').textContent=TIER_NAMES[tier];
+  document.getElementById('aHpBar').style.width=(stats.hp/maxS.hp*100)+'%';
+  document.getElementById('aAtkBar').style.width=(stats.atk/maxS.atk*100)+'%';
+  document.getElementById('aDefBar').style.width=(stats.def/maxS.def*100)+'%';
+  document.getElementById('aMagBar').style.width=(maxS.mag>0?Math.max(0,stats.mag/maxS.mag*100):0)+'%';
+  document.getElementById('aHpVal').textContent=stats.hp;
+  document.getElementById('aAtkVal').textContent=stats.atk;
+  document.getElementById('aDefVal').textContent=stats.def;
+  document.getElementById('aMagVal').textContent=stats.mag>0?stats.mag:'—';
+
+  if(lv<MAX_LV){
+    document.getElementById('advProgLabel').textContent=`次のLv.${lv+1}まで`;
+    document.getElementById('advProgCount').textContent=`あと${prog.remaining}件`;
+    document.getElementById('advProgBar').style.width=prog.pct+'%';
+  }else{
+    document.getElementById('advProgLabel').textContent='🎉 Lv.99 最高位到達！';
+    document.getElementById('advProgCount').textContent=`${D.entries.length}件`;
+    document.getElementById('advProgBar').style.width='100%';
+  }
+
+  // Story
+  document.getElementById('tStoryTitle').textContent=`📖 ${TIER_NAMES[tier]}の冒険`;
+  document.getElementById('tStoryText').textContent=TIER_STORIES[tier];
+
+  // Equipment
+  const equip=EQUIP_TIERS[tier];
   document.getElementById('equipList').innerHTML=[
-    {slot:'⚔️ 武器',item:equip.weapon},
-    {slot:'🛡️ 防具',item:equip.armor},
-    {slot:'🔰 盾',  item:equip.shield},
-    {slot:'✨ 魔法', item:equip.magic},
+    {slot:'⚔️ 武器',item:equip.weapon},{slot:'🛡️ 防具',item:equip.armor},
+    {slot:'🔰 盾',item:equip.shield},{slot:'✨ 魔法',item:equip.magic},
   ].map(({slot,item})=>`<div class="equip-row">
     <div class="equip-icon">${item.icon}</div>
-    <div class="equip-info">
-      <h4>${item.name} <span class="equip-stat">${item.stat}</span></h4>
-      <p>${slot} — ${item.desc}</p>
-    </div>
+    <div class="equip-info"><h4>${item.name} <span class="equip-stat">${item.stat}</span></h4><p>${slot}</p></div>
     <div class="equip-rarity rarity-${item.r}">${RARITY_LABEL[item.r]}</div>
   </div>`).join('');
 
+  // Happy equipment
+  const happyAll=[
+    {name:'幸せの靴下',icon:'🧦',floor:10},{name:'幸せのズボン',icon:'👖',floor:20},
+    {name:'幸せの服',icon:'👕',floor:30},{name:'幸せのグローブ',icon:'🧤',floor:40},
+    {name:'幸せのマント',icon:'🦸',floor:50},{name:'幸せの兜',icon:'⛑️',floor:60},
+    {name:'幸せの盾',icon:'🛡️',floor:70},{name:'幸せの鎧',icon:'🏰',floor:80},
+    {name:'幸せの剣',icon:'⚔️',floor:90},{name:'感謝の王冠',icon:'👑',floor:99},
+  ];
+  document.getElementById('happyGrid').innerHTML=happyAll.map(h=>{
+    const got=D.happyEquips.includes(h.name);
+    return`<div class="happy-slot ${got?'obtained':''}"><div class="h-icon">${h.icon}</div><div class="h-name">${got?h.name:'???'}</div></div>`;
+  }).join('');
+
+  // Boss list
+  document.getElementById('bossList').innerHTML=BOSSES.map(b=>{
+    const done=D.bossDefeated.includes(b.floor);
+    return`<div class="boss-row ${done?'defeated':''}">
+      <div class="boss-status">${done?'✅':'🔒'}</div>
+      <div class="boss-name">${done?`${b.name}（${b.sub}）`:'？？？'}</div>
+      <div class="boss-floor">${b.floor}F</div>
+    </div>`;
+  }).join('');
+
+  // Master quotes
+  document.getElementById('masterCount').textContent=`${D.masterSeen.length} / ${MW.length}`;
+  if(D.masterSeen.length===0){
+    document.getElementById('masterList').innerHTML='<div class="empty-state"><p>師匠の言葉はまだ受け取っていません。<br>冒険を続けると師匠が現れます。</p></div>';
+  }else{
+    document.getElementById('masterList').innerHTML=D.masterSeen.slice().reverse().slice(0,20).map(i=>{
+      const q=MW[i];
+      return`<div class="master-item"><div class="m-quote">「${q[0]}」</div><div class="m-detail">${q[1]}</div></div>`;
+    }).join('');
+  }
+
+  // Monster book
+  const seenMons=Object.keys(D.monstersDefeated);
+  document.getElementById('monBookCount').textContent=`${seenMons.length} / ${MONS.length}`;
+  document.getElementById('monGrid').innerHTML=MONS.map(m=>{
+    const seen=D.monstersDefeated[m[0]];
+    return`<div class="mon-cell ${seen?'seen':'unseen'}">
+      <div class="mon-sprite">${buildMonSVG(m[1],m[2],4)}</div>
+      <div class="mon-name">${seen?m[0]:'???'}</div>
+      ${seen?`<div class="mon-count">×${seen}</div>`:''}
+    </div>`;
+  }).join('');
+
+  // Achievements
   renderAchs();
 }
 
-// ── Achievements ──
+// ════════════════════════════════════════
+//  ACHIEVEMENTS
+// ════════════════════════════════════════
 const ACHS=[
-  {id:'a1',icon:'🌱',name:'最初の一歩',      desc:'初めての感謝を記録',           req:(e,d)=>e.length>=1},
-  {id:'a2',icon:'🌿',name:'5つの感謝',        desc:'感謝を5件記録',                req:(e,d)=>e.length>=5},
-  {id:'a3',icon:'🌳',name:'感謝が育つ',        desc:'感謝を10件記録',               req:(e,d)=>e.length>=10},
-  {id:'a4',icon:'🌸',name:'感謝が咲く',        desc:'感謝を30件記録',               req:(e,d)=>e.length>=30},
-  {id:'a5',icon:'🏆',name:'感謝の大樹',        desc:'感謝を100件記録',              req:(e,d)=>e.length>=100},
-  {id:'a6',icon:'💫',name:'感謝500の奇跡',    desc:'感謝を500件記録',              req:(e,d)=>e.length>=500},
-  {id:'b1',icon:'🔥',name:'3日連続',          desc:'3日間連続で記録',              req:(e,d)=>d.streak>=3},
-  {id:'b2',icon:'⚡',name:'1週間の感謝',      desc:'7日間連続で記録',              req:(e,d)=>d.streak>=7},
-  {id:'b3',icon:'👑',name:'感謝マスター',      desc:'30日間連続で記録',             req:(e,d)=>d.streak>=30},
-  {id:'c1',icon:'🙏',name:'ありがとう10回',    desc:'ありがとうを10回押した',       req:(e,d)=>d.tapTotal>=10},
-  {id:'c2',icon:'💎',name:'ありがとう100回',   desc:'ありがとうを100回押した',      req:(e,d)=>d.tapTotal>=100},
-  {id:'d1',icon:'🌈',name:'感謝の虹',          desc:'全7カテゴリで記録',            req:(e,d)=>{
-    const cs=new Set(e.map(x=>x.category));
-    return ['👨‍👩‍👧 家族','💼 仕事','👫 友人','🌿 自然','🍱 食事','💪 健康','📚 学び'].every(c=>cs.has(c));
-  }},
-  {id:'q1',icon:'⚔️',name:'見習い冒険者',      desc:'Lv.10 に到達',                req:(e,d)=>getLevel()>=10},
-  {id:'q2',icon:'🗡️',name:'勇者への道',        desc:'Lv.40 に到達',                req:(e,d)=>getLevel()>=40},
-  {id:'q3',icon:'🌟',name:'伝説の勇者',        desc:'Lv.80 に到達',                req:(e,d)=>getLevel()>=80},
-  {id:'q4',icon:'👑',name:'感謝の勇者王',      desc:'Lv.99 最高レベル達成！',      req:(e,d)=>getLevel()>=99},
+  {icon:'🌱',name:'最初の一歩',desc:'初めての感謝を記録',req:()=>D.entries.length>=1},
+  {icon:'🌿',name:'5つの感謝',desc:'感謝を5件記録',req:()=>D.entries.length>=5},
+  {icon:'🌳',name:'感謝が育つ',desc:'感謝を10件記録',req:()=>D.entries.length>=10},
+  {icon:'🌸',name:'感謝が咲く',desc:'感謝を30件記録',req:()=>D.entries.length>=30},
+  {icon:'🏆',name:'感謝の大樹',desc:'感謝を100件記録',req:()=>D.entries.length>=100},
+  {icon:'💫',name:'感謝500の奇跡',desc:'感謝を500件記録',req:()=>D.entries.length>=500},
+  {icon:'🔥',name:'3日連続',desc:'3日間連続で記録',req:()=>D.streak>=3},
+  {icon:'⚡',name:'1週間の感謝',desc:'7日間連続で記録',req:()=>D.streak>=7},
+  {icon:'👑',name:'感謝マスター',desc:'30日間連続で記録',req:()=>D.streak>=30},
+  {icon:'🙏',name:'ありがとう10回',desc:'ありがとうを10回押した',req:()=>D.tapTotal>=10},
+  {icon:'💎',name:'ありがとう100回',desc:'ありがとうを100回押した',req:()=>D.tapTotal>=100},
+  {icon:'🌈',name:'感謝の虹',desc:'全7カテゴリで記録',req:()=>{const cs=new Set(D.entries.map(x=>x.category));return['👨‍👩‍👧 家族','💼 仕事','👫 友人','🌿 自然','🍱 食事','💪 健康','📚 学び'].every(c=>cs.has(c));}},
+  {icon:'⚔️',name:'見習い冒険者',desc:'Lv.10 に到達',req:()=>getLevel()>=10},
+  {icon:'🗡️',name:'勇者への道',desc:'Lv.40 に到達',req:()=>getLevel()>=40},
+  {icon:'🌟',name:'伝説の勇者',desc:'Lv.80 に到達',req:()=>getLevel()>=80},
+  {icon:'👑',name:'感謝の勇者王',desc:'Lv.99 最高レベル達成！',req:()=>getLevel()>=99},
+  {icon:'🐉',name:'初ボス撃破',desc:'最初のボスを倒した',req:()=>D.bossDefeated.length>=1},
+  {icon:'👹',name:'5体のボス',desc:'ボスを5体倒した',req:()=>D.bossDefeated.length>=5},
+  {icon:'😈',name:'全ボス制覇',desc:'全10体のボスを倒した',req:()=>D.bossDefeated.length>=10},
+  {icon:'👴',name:'師匠の弟子',desc:'師匠の言葉を10個受け取った',req:()=>D.masterSeen.length>=10},
+  {icon:'📖',name:'図鑑マスター',desc:'モンスターを20種類倒した',req:()=>Object.keys(D.monstersDefeated).length>=20},
 ];
+
 function renderAchs(){
   document.getElementById('achList').innerHTML=ACHS.map(a=>{
-    const on=a.req(D.entries,D);
-    return `<div class="ach-item ${on?'on':'off'}">
+    const on=a.req();
+    return`<div class="ach-item ${on?'on':'off'}">
       <div class="ach-icon">${a.icon}</div>
       <div class="ach-info"><h4>${a.name}</h4><p>${a.desc}</p></div>
-      ${on?'<span style="color:#52b788;font-size:18px;flex-shrink:0">✓</span>':'<span style="color:#ccc;font-size:12px;flex-shrink:0">🔒</span>'}
+      ${on?'<span style="color:var(--green);font-size:16px;flex-shrink:0">✓</span>':'<span style="color:#555;font-size:11px;flex-shrink:0">🔒</span>'}
     </div>`;
   }).join('');
 }
 
-// ── Calendar ──
+// ════════════════════════════════════════
+//  SUB-TAB NAVIGATION
+// ════════════════════════════════════════
+function switchSub(btn,id){
+  document.querySelectorAll('.sub-tab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.sub-content').forEach(c=>c.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(id).classList.add('active');
+}
+
+// ════════════════════════════════════════
+//  PROMPT
+// ════════════════════════════════════════
+const PROMPTS=[
+  {e:'💭',t:'今日、誰かに感謝したいことはありましたか？'},
+  {e:'🌤',t:'何気ない日常の中に、小さな幸せはありましたか？'},
+  {e:'💛',t:'今日、あなたを助けてくれた人はいましたか？'},
+  {e:'☀️',t:'今日の体験で、ポジティブなことを一つ見つけてみましょう'},
+  {e:'🌸',t:'今日の自分自身を褒めてあげることはありますか？'},
+  {e:'🎵',t:'今日、心が温かくなった瞬間はありましたか？'},
+  {e:'🌙',t:'この1日で、何かに「ありがとう」と思いましたか？'},
+  {e:'✨',t:'当たり前に思っていることに、感謝してみましょう'},
+  {e:'🤝',t:'誰かの優しさを受け取りましたか？'},
+  {e:'🌈',t:'今日の小さな喜びを記録してみましょう'},
+];
+function updatePrompt(){
+  const td=D.entries.filter(e=>e.date===todayStr()).length;
+  let p;
+  if(td>=5)p={e:'🌟',t:`今日もう${td}つの感謝を記録！素晴らしい冒険だ ✨`};
+  else if(td>=1)p=PROMPTS[Math.floor(Math.random()*PROMPTS.length)];
+  else p=PROMPTS[0];
+  document.getElementById('promptEmoji').textContent=p.e;
+  document.getElementById('promptText').textContent=p.t;
+}
+
+// ════════════════════════════════════════
+//  CALENDAR
+// ════════════════════════════════════════
 let calY=new Date().getFullYear(),calM=new Date().getMonth();
 const MON=['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
 function renderCal(){
@@ -788,7 +1261,7 @@ function renderCal(){
   const eDates=new Set(D.entries.map(e=>e.date)),t=todayStr();
   const firstDay=new Date(calY,calM,1).getDay(),dim=new Date(calY,calM+1,0).getDate();
   let h=['日','月','火','水','木','金','土'].map(d=>`<div class="cal-dh">${d}</div>`).join('');
-  for(let i=0;i<firstDay;i++) h+=`<div class="cal-d none"></div>`;
+  for(let i=0;i<firstDay;i++)h+=`<div class="cal-d none"></div>`;
   for(let d=1;d<=dim;d++){
     const ds=`${calY}-${String(calM+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
     const isT=ds===t,hasE=eDates.has(ds);
@@ -796,9 +1269,9 @@ function renderCal(){
   }
   document.getElementById('calGrid').innerHTML=h;
 }
-function moveMon(d){ calM+=d; if(calM<0){calM=11;calY--;} if(calM>11){calM=0;calY++;} renderCal(); }
+function moveMon(d){calM+=d;if(calM<0){calM=11;calY--;}if(calM>11){calM=0;calY++;}renderCal();}
 function showDay(ds){
-  const es=D.entries.filter(e=>e.date===ds); if(!es.length)return;
+  const es=D.entries.filter(e=>e.date===ds);if(!es.length)return;
   document.getElementById('sheetDate').textContent=fmtDate(ds)+`（${es.length}件）`;
   document.getElementById('sheetEntries').innerHTML=es.map(e=>`<div class="entry-item">
     <div class="entry-text">${esc(e.text)}</div>
@@ -806,20 +1279,22 @@ function showDay(ds){
   </div>`).join('');
   document.getElementById('overlay').classList.add('open');
 }
-function closeOverlay(ev){ if(ev.target===document.getElementById('overlay'))document.getElementById('overlay').classList.remove('open'); }
-function closeOverlayDirect(){ document.getElementById('overlay').classList.remove('open'); }
+function closeOverlay(ev){if(ev.target===document.getElementById('overlay'))document.getElementById('overlay').classList.remove('open');}
+function closeOverlayDirect(){document.getElementById('overlay').classList.remove('open');}
 
-// ── Stats ──
+// ════════════════════════════════════════
+//  STATS
+// ════════════════════════════════════════
 function renderStats(){
   document.getElementById('statsGrid').innerHTML=[
-    {v:D.entries.length,l:'感謝の総数'},{v:D.streak,l:'現在のストリーク'},
-    {v:D.best,l:'最高ストリーク'},{v:D.tapTotal,l:'ありがとう回数'},
+    {v:D.entries.length,l:'感謝の総数'},{v:D.streak,l:'連続記録'},
+    {v:D.gold,l:'ゴールド'},{v:Object.keys(D.monstersDefeated).length,l:'討伐種類'},
   ].map(s=>`<div class="card stat-box"><div class="stat-big">${s.v}</div><div class="stat-lbl">${s.l}</div></div>`).join('');
   const cc={};D.entries.forEach(e=>{cc[e.category]=(cc[e.category]||0)+1;});
   const maxC=Math.max(...Object.values(cc),1),sorted=Object.entries(cc).sort((a,b)=>b[1]-a[1]);
   document.getElementById('catChart').innerHTML=sorted.length
-    ?sorted.map(([c,v])=>{const lbl=c.split(' ').slice(1).join(' ')||c;return `<div class="bar-row"><div class="bar-lbl">${lbl}</div><div class="bar-track"><div class="bar-fill" style="width:${(v/maxC*100).toFixed(1)}%"></div></div><div class="bar-cnt">${v}</div></div>`;}).join('')
-    :'<p style="color:var(--text-sub);font-size:13px;text-align:center;padding:8px">まだ記録がありません</p>';
+    ?sorted.map(([c,v])=>`<div class="bar-row"><div class="bar-lbl">${c.split(' ').slice(1).join(' ')||c}</div><div class="bar-track"><div class="bar-fill" style="width:${(v/maxC*100).toFixed(1)}%"></div></div><div class="bar-cnt">${v}</div></div>`).join('')
+    :'<p style="color:var(--text-sub);font-size:12px;text-align:center;padding:8px">まだ記録がありません</p>';
   const mc=[0,0,0,0,0,0];D.entries.forEach(e=>{if(e.mood>=1&&e.mood<=5)mc[e.mood]++;});
   const maxM=Math.max(...mc,1);
   document.getElementById('moodChart').innerHTML=[1,2,3,4,5].map(m=>
@@ -827,14 +1302,14 @@ function renderStats(){
   ).join('');
 }
 
-// ── Memory ──
+// ════════════════════════════════════════
+//  MEMORY (あの日)
+// ════════════════════════════════════════
 function renderMemory(){
   const past=D.entries.filter(e=>e.date!==todayStr());
   if(!past.length){
     document.getElementById('memCard').innerHTML=`<div class="empty-state"><div class="empty-icon">💫</div><p>記録を増やすと、過去の感謝がここに現れます</p></div>`;
-    document.getElementById('memReact').style.display='none';
-    document.getElementById('memHistory').textContent='記録がありません';
-    return;
+    document.getElementById('memReact').style.display='none';return;
   }
   const e=past[Math.floor(Math.random()*past.length)];
   document.getElementById('memCard').innerHTML=`<div class="memory-inner">
@@ -844,38 +1319,39 @@ function renderMemory(){
     <button class="shuffle-btn" onclick="renderMemory()">🔀 別の記憶を見る</button>
   </div>`;
   document.getElementById('memReact').style.display='block';
-  const dg={};D.entries.forEach(e=>{const m=e.date.slice(0,7);if(!dg[m])dg[m]=new Set();dg[m].add(e.date);});
-  document.getElementById('memHistory').innerHTML=Object.entries(dg).sort().reverse().slice(0,8).map(([m,s])=>{
-    const [y,mo]=m.split('-');const ds=[...s].sort().map(d=>parseInt(d.slice(8))).join('日、')+'日';
-    return `<strong>${y}年${MON[parseInt(mo)-1]}</strong>：${ds}`;
-  }).join('<br>')||'記録がありません';
 }
 function reactMem(type){
   if(type==='still'){burst(['💛','✨','🙏']);toast('💛 素敵！感謝はずっと続いていますね');}
   else{switchTab('home',document.querySelector('.nav-btn'));toast('🌱 新しい感謝を記録しましょう！');}
 }
 
-// ── Navigation ──
+// ════════════════════════════════════════
+//  NAVIGATION
+// ════════════════════════════════════════
 function switchTab(tab,btn){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('tab-'+tab).classList.add('active');
   btn.classList.add('active');
-  if(tab==='quest')    renderQuest();
-  if(tab==='calendar') renderCal();
-  if(tab==='stats')    renderStats();
-  if(tab==='memory')   renderMemory();
+  if(tab==='adventure')renderAdventure();
+  if(tab==='calendar')renderCal();
+  if(tab==='stats')renderStats();
+  if(tab==='memory')renderMemory();
 }
 
-// ── renderAll ──
+// ════════════════════════════════════════
+//  RENDER ALL
+// ════════════════════════════════════════
 function renderAll(){
   renderCounter();updateHeader();renderTodayList();updatePrompt();
-  if(document.getElementById('tab-quest').classList.contains('active')) renderQuest();
+  if(document.getElementById('tab-adventure').classList.contains('active'))renderAdventure();
 }
 
-// ── Init ──
+// ════════════════════════════════════════
+//  INIT
+// ════════════════════════════════════════
 (function init(){
-  if(D.tapDate!==todayStr()) D.tapToday=0;
+  if(D.tapDate!==todayStr())D.tapToday=0;
   renderAll();renderCal();
 })();
 </script>
